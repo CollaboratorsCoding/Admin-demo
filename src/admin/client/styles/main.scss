@@ -1,0 +1,60 @@
+@import './fonts.scss';
+@import './typography.scss';
+@import './Mixins.scss';
+@import './base.scss';
+@import './cards.scss';
+@import './sections.scss';
+@import './sidebar.scss';
+
+@import './header.scss';
+
+@import './404.scss';
+@import './loader.scss';
+
+@import './profile.scss';
+.page-wrapper {
+	overflow: hidden;
+}
+.page-container {
+	background: #e5e5e5;
+	padding-left: 300px;
+}
+
+.main-content {
+	padding-top: 80px;
+	min-height: 100vh;
+}
+
+.ant-form,
+.ant-form-item,
+.ant-collapse {
+	font-family: 'Poppins', sans-serif !important;
+}
+
+.ant-form.ant-form-horizontal.center-form {
+	padding: 40px;
+	max-width: 430px;
+	margin: auto;
+}
+.text-click {
+	color: #1890ff;
+	cursor: pointer;
+	font-size: 14px;
+	&:hover {
+		color: #0c64b6;
+	}
+}
+
+@media (max-width: 991px) {
+	.main-content {
+		padding-top: 50px;
+	}
+}
+
+@media (max-width: 991px) {
+	.page-container {
+		position: relative;
+		top: 88px;
+		padding-left: 0;
+	}
+}

@@ -1,0 +1,18 @@
+section {
+	position: relative;
+}
+
+.section__content {
+	position: relative;
+	margin: 0 auto;
+	z-index: 1;
+}
+.section__content--p30 {
+	padding: 30px;
+}
+
+@media (max-width: 991px) {
+	.section__content--p30 {
+		padding: 0;
+	}
+}

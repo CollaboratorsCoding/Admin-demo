@@ -1,0 +1,7 @@
+Hey, {{name}}!
+
+Can you do us a favor and verify your email address?
+
+[Verify Email Address]({{verifyUrl}})
+
+Thanks!CodeNameVero Team

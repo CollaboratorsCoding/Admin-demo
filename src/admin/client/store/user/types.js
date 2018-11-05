@@ -1,0 +1,12 @@
+const userType = {};
+
+userType.GET_USER = 'GET_USER';
+userType.CREATE_USER = 'CREATE_USER';
+userType.LOGIN_USER = 'LOGIN_USER';
+userType.EDIT_USER = 'EDIT_USER';
+userType.LOGOUT_USER = 'LOGOUT_USER';
+userType.RESTORE_PASSWORD_USER = 'RESTORE_PASSWORD_USER';
+userType.UPLOAD_IMAGE_USER = 'UPLOAD_IMAGE_USER';
+userType.DELETE_IMAGE_USER = 'DELETE_IMAGE_USER';
+
+export default userType;
