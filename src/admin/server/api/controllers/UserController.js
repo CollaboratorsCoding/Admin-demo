@@ -63,13 +63,7 @@ UserController.logout = (req, res) => {
 	req.logout();
 	req.session.token = null;
 	req.session.adminData = null;
-	res.json({
-		requestSuccess: {
-			message: 'You are Logged Out now',
-			operation: 'user_logout',
-			redirectURL: '/',
-		},
-	});
+	res.send("ok")
 };
 
 UserController.getprofile = (req, res) => {
