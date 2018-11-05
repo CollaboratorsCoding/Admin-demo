@@ -58,14 +58,6 @@ function UserReducer(
 			loading: true,
 			error: {},
 		};
-	case `${types.CREATE_USER}_COMPLETED`:
-		return {
-			...state,
-			user: _.get(action.payload, 'data.user', {}),
-			loading: false,
-			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
-			error: {},
-		};
 	case `${types.CREATE_USER}_FAILED`:
 		return {
 			...state,
@@ -131,14 +123,6 @@ function UserReducer(
 			...state,
 			error: {},
 			loading: true,
-		};
-	case `${types.LOGIN_USER}_COMPLETED`:
-		return {
-			...state,
-			user: _.get(action.payload, 'data.user', {}),
-			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
-			loading: false,
-			error: {},
 		};
 	case `${types.LOGIN_USER}_FAILED`:
 		return {

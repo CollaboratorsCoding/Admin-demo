@@ -37,15 +37,7 @@ UserController.signup = (req, res, next) => {
 			req.session.adminData = {
 				name: user.name
 			}
-			return res.json({
-				isLoggedIn: req.isAuthenticated(),
-				user: _.omit(user.toObject(), [
-					'password',
-					'verificationToken',
-					'resetPasswordToken',
-					'resetPasswordExpires',
-				]),
-			});
+			return res.send("ok")
 		});
 	})(req, res, next);
 };
@@ -62,23 +54,7 @@ UserController.signin = (req, res, next) => {
 			req.session.adminData = {
 				name: user.name
 			}
-			return Image.findOne(
-				{ parentCollection: 'users', parentId: user._id },
-				'publicURL',
-				(err, image) => {
-					const userObject = user.toObject();
-					userObject.imageURL = _.get(image, 'publicURL', undefined);
-					return res.json({
-						isLoggedIn: req.isAuthenticated(),
-						user: _.omit(userObject, [
-							'password',
-							'verificationToken',
-							'resetPasswordToken',
-							'resetPasswordExpires',
-						])
-					});
-				}
-			)
+			return res.send("ok")	
 		});
 	})(req, res, next);
 };

@@ -42,12 +42,13 @@ class Login extends React.Component {
 		const { handleLoginUser, sendResetLinkEmail } = this.props;
 		const { forgotActive } = this.state;
 		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
+		this.props.form.validateFields(async (err, values) => {
 			if (!err) {
 				if (forgotActive) {
 					sendResetLinkEmail(values);
 				} else {
-					handleLoginUser(values);
+					await handleLoginUser(values);
+					window.location.reload(true);
 				}
 			}
 		});
