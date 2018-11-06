@@ -37,6 +37,18 @@ MessageActions.getCount = () =>
 		}
 	)
 
+MessageActions.sendMessage = data => (
+	{
+		type: 'socket',
+		types: [
+			`${messageType.SEND_MESSAGE}_START`, 
+			`${messageType.SEND_MESSAGE}_SUCCESS`, 
+			`${messageType.SEND_MESSAGE}_FAIL`
+		],
+		promise: socket => socket.emit('message_send', data)
+	}
+)
+
 
 MessageActions.subscribeMessages = () => dispatch => {
 	  dispatch({
