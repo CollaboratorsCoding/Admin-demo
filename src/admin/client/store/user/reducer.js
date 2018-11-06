@@ -6,6 +6,7 @@ function UserReducer(
 		checkedAuth: false,
 		isLoggedIn: false,
 		user: {},
+		users: [],
 		loadingUserState: true,
 		error: {},
 		loading: false,
@@ -31,6 +32,44 @@ function UserReducer(
 	case `${types.GET_USER}_FAILED`:
 		return {
 			...state,
+			error: {
+				type: _.get(action.payload, 'response.data.type', 'server'),
+				message: _.get(
+					action.payload,
+					'response.data.message',
+					'Oops... Something went wrong 😔'
+				),
+				formData: _.get(
+					action.payload,
+					'response.data.formData',
+					{}
+				),
+			},
+			loadingUserState: false,
+			checkedAuth: true,
+			isLoggedIn: _.get(
+				action.payload,
+				'response.data.isLoggedIn',
+				false
+			),
+		};
+	case `${types.GET_USERS}_START`:
+		return {
+			...state,
+			loading: true,
+			error: {},
+		};
+	case `${types.GET_USERS}_COMPLETED`:
+		return {
+			...state,
+			loading: false,
+			users: action.payload.data,
+			error: {},
+		};
+	case `${types.GET_USERS}_FAILED`:
+		return {
+			...state,
+			loading: false,
 			error: {
 				type: _.get(action.payload, 'response.data.type', 'server'),
 				message: _.get(

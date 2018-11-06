@@ -20,13 +20,13 @@ const Sidebar = () => (
 							Send-message
 						</Link>
 					</li>
-					{/* <li>
-						<Link to="/">
-							<Icon type="table" theme="outlined" />
-							Tables
+					<li>
+						<Link to="/userstable">
+							<Icon type="user" theme="outlined" />
+							Users
 						</Link>
 					</li>
-					<li>
+					{/* <li>
 						<Link to="/">
 							<Icon type="calendar" theme="outlined" />
 							Calendar
@@ -37,7 +37,7 @@ const Sidebar = () => (
 							<Icon type="form" theme="outlined" />
 							Forms
 						</Link>
-					</li> */}
+					</li> */} 
 				</ul>
 			</nav>
 		</div>

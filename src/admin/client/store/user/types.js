@@ -1,6 +1,7 @@
 const userType = {};
 
 userType.GET_USER = 'GET_USER';
+userType.GET_USERS = 'GET_USERS';
 userType.CREATE_USER = 'CREATE_USER';
 userType.LOGIN_USER = 'LOGIN_USER';
 userType.EDIT_USER = 'EDIT_USER';

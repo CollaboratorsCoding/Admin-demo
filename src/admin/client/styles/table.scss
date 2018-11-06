@@ -1,0 +1,7 @@
+.table {
+    background: white;
+    & .ant-pagination {
+        text-align: right;
+        padding: 20px;
+    }
+}

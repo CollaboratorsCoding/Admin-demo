@@ -24,11 +24,13 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import NotFound from '../pages/NotFound';
 import Logout from '../pages/Logout';
+import UsersTable from '../pages/Users';
 import Profile from '../pages/Profile';
 import RestorePassword from '../pages/RestorePassword';
 
 // Actions
 import UserActions from '../store/user/action';
+import MessageActions from '../store/msg/action';
 
 const {
 	getUser,
@@ -40,7 +42,10 @@ const {
 	editUser,
 	uploadAvatar,
 	deleteAvatar,
+	getUsers,
 } = UserActions;
+
+const { sendMessage } = MessageActions
 
 class App extends React.Component {
 	constructor(props) {
@@ -164,6 +169,14 @@ class App extends React.Component {
 									{...props}
 									{...state}
 								/>
+								<Authenticated
+									exact
+									path="/userstable"
+									component={UsersTable}
+									pathAfterFailure="/login"
+									{...props}
+									{...state}
+								/>
 								<Public
 									path="/signup/"
 									component={Register}
@@ -182,7 +195,9 @@ class App extends React.Component {
 									{...props}
 									{...state}
 								/>
-								<Route path="/sendmessage/" component={SendMessage} />
+								<Route path="/sendmessage/" render={prop =>
+									React.createElement(SendMessage, { ...prop, ...props })
+								} />
 								<Route component={NotFound} />
 							</Switch>
 						</div>
@@ -211,6 +226,8 @@ const mapDispatchToProps = dispatch =>
 		{
 			// USER ACTIONS
 			handleGetUser: getUser,
+			handleGetUsers: getUsers,
+			hendleSendMessage: sendMessage,
 			handleCreateUser: createUser,
 			handleLoginUser: loginUser,
 			handleLogOutUser: logoutUser,

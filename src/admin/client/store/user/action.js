@@ -4,6 +4,11 @@ import createActionThunk from '../actionThunk';
 
 const UserActions = {};
 
+UserActions.getUsers = createActionThunk(
+	types.GET_USERS,
+	(limit, offset) => axios.get(`/api/users?q=${limit}&o=${offset}`)
+);
+
 UserActions.getUser = createActionThunk(types.GET_USER, () =>
 	axios.get(`/api/profile`)
 );

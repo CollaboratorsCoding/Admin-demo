@@ -314,4 +314,34 @@ UserController.deleteAvatar = (req, res) => {
 	});
 };
 
+
+UserController.getUsers = (req, res) => {
+	let count = 20;
+	let offset = 0;
+	if (parseFloat(req.query.q)) {
+		count = req.query.q;
+	}
+	if (parseFloat(req.query.o)) {
+		offset = req.query.o;
+	}
+	User.find()
+		.sort({ date: -1 })
+		.skip(parseFloat(offset))
+		.limit(parseFloat(count))
+		.exec((err, users) => {
+			const mappedUsers = users.map(user => ({
+				key: user._id,
+				..._.pick(user, ['name', 'age', 'email']),
+			}))
+			User.count().exec((errs, counts) => {
+				res.json({
+					users: mappedUsers,
+					counts
+				})
+			})
+		})
+};
+
+
+
 module.exports = UserController;
