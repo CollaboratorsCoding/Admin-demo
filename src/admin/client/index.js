@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { LocaleProvider } from 'antd';
-import UA from 'antd/lib/locale-provider/uk_UA';
 import configureStore from './store/configureStore';
 
 import SocketClient from './store/SocketClient';
@@ -20,11 +18,9 @@ const store = configureStore(initialState, socketClient);
 function render(Component) {
 	ReactDOM.render(
 		<Provider store={store}>
-			<LocaleProvider locale={UA}>
-				<BrowserRouter>
-					<Component />
-				</BrowserRouter>
-			</LocaleProvider>
+			<BrowserRouter>
+				<Component />
+			</BrowserRouter>
 		</Provider>,
 		document.getElementById('react-root')
 	);

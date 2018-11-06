@@ -47,8 +47,7 @@ class Login extends React.Component {
 				if (forgotActive) {
 					sendResetLinkEmail(values);
 				} else {
-					await handleLoginUser(values);
-					window.location.reload(true);
+					handleLoginUser(values);
 				}
 			}
 		});

@@ -8,9 +8,8 @@ class Logout extends Component {
 
 	componentDidMount() {
 		const { handleLogOutUser } = this.props;
-		setTimeout(async () => {
-			await handleLogOutUser();
-			window.location.reload(true);
+		setTimeout(() => {
+			handleLogOutUser();
 		}, 2000);
 	}
 

@@ -64,11 +64,10 @@ class Register extends React.Component {
 	handleSubmit(e) {
 		const { handleCreateUser } = this.props;
 		e.preventDefault();
-		this.props.form.validateFields(async (err, values) => {
+		this.props.form.validateFields((err, values) => {
 			if (!err) {
 				const formValues = Object.assign({}, values, {password_confirm: undefined});
-				await handleCreateUser(formValues);
-				window.location.reload(true);
+				handleCreateUser(formValues);
 			}
 		});
 	}

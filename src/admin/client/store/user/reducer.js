@@ -58,6 +58,9 @@ function UserReducer(
 			loading: true,
 			error: {},
 		};
+	case `${types.CREATE_USER}_COMPLETED`:
+		window.location.reload(true);
+		return state
 	case `${types.CREATE_USER}_FAILED`:
 		return {
 			...state,
@@ -124,6 +127,9 @@ function UserReducer(
 			error: {},
 			loading: true,
 		};
+	case `${types.LOGIN_USER}_COMPLETED`:
+		window.location.reload(true);
+		return state
 	case `${types.LOGIN_USER}_FAILED`:
 		return {
 			...state,
@@ -149,19 +155,9 @@ function UserReducer(
 			error: {},
 			requestSuccess: {},
 		};
-	// case `${types.LOGOUT_USER}_COMPLETED`:
-	// 	return {
-	// 		...state,
-	// 		user: {},
-	// 		error: {},
-	// 		loading: false,
-	// 		checkedAuth: true,
-	// 		isLoggedIn: false,
-	// 		requestSuccess: _.get(action.payload, 'data.requestSuccess', {
-	// 			operation: 'generic',
-	// 			message: 'Success. Operation Completed',
-	// 		}),
-	// 	};
+	case `${types.LOGOUT_USER}_COMPLETED`:
+		window.location.reload(true);
+		return state
 	case `${types.LOGOUT_USER}_FAILED`:
 		return {
 			...state,

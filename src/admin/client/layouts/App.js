@@ -3,7 +3,7 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { Route, withRouter, Switch } from 'react-router-dom';
+import { Route, withRouter, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Modal, notification } from 'antd';
@@ -19,6 +19,7 @@ import Public from '../../../hocs/Public';
 
 // Pages
 import HomePage from '../pages/HomePage';
+import SendMessage from '../pages/SendMessage';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import NotFound from '../pages/NotFound';
@@ -108,8 +109,9 @@ class App extends React.Component {
 				>
 					<div>
 						Email on your <strong>{user.email}</strong> adress was
-						sent. Please activate your account
-						<button type="button">Resent Activation Link</button>
+						sent. Please activate your account.
+						{/* <button type="button">Resent Activation Link</button> */}
+						<Link style={{float: 'right'}} to="/logout"> Logout</Link>
 					</div>
 				</Modal>
 			);
@@ -180,6 +182,7 @@ class App extends React.Component {
 									{...props}
 									{...state}
 								/>
+								<Route path="/sendmessage/" component={SendMessage} />
 								<Route component={NotFound} />
 							</Switch>
 						</div>

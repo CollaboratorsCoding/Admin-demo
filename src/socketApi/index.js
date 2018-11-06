@@ -1,5 +1,5 @@
 const socketIo = require('socket.io');
-const _ = require('lodash');
+// const _ = require('lodash');
 const sharedsession = require('express-socket.io-session');
 const Message = require('mongoose').model('Message');
 
@@ -15,18 +15,16 @@ const socketInit = session => {
 	);
 	io.on('connection', socket => {
 		connectedUsers.push({
-			isAdmin: !!socket.handshake.session.adminData,
+			isAdmin: !!socket.handshake.session.token,
 			socketId: socket.id,
-			name: _.get(socket.handshake.session, 'adminData.name', 'landing'),
 		});
 		
-		if (socket.handshake.session.adminData) {
+		if (socket.handshake.session.token) {
 			socket.join('admins');
 		}
 		console.log('User connected', connectedUsers, connectedUsers.length);
 		io.to('admins').emit('user_counter', connectedUsers.length) 
 		socket.on('get_count', () => {
-			console.log(socket.handshake.session)
 			io.to('admins').emit('user_counter', connectedUsers.length)
 		});
 

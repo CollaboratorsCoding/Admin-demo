@@ -34,9 +34,9 @@ UserController.signup = (req, res, next) => {
 			if (loginErr) return next(loginErr);
 			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
 			req.session.token = token;
-			req.session.adminData = {
-				name: user.name
-			}
+			// req.session.adminData = {
+			// 	name: user.name
+			// }
 			return res.send("ok")
 		});
 	})(req, res, next);
@@ -51,10 +51,10 @@ UserController.signin = (req, res, next) => {
 			if (loginErr) return next(loginErr);
 			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
 			req.session.token = token;
-			req.session.adminData = {
-				name: user.name
-			}
-			return res.send("ok")	
+			// req.session.adminData = {
+			// 	name: user.name
+			// }
+			return res.status(200).send("ok")	
 		});
 	})(req, res, next);
 };
@@ -62,7 +62,7 @@ UserController.signin = (req, res, next) => {
 UserController.logout = (req, res) => {
 	req.logout();
 	req.session.token = null;
-	req.session.adminData = null;
+	// req.session.adminData = null;
 	res.send("ok")
 };
 
