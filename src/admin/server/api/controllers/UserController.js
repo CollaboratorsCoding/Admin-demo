@@ -316,14 +316,15 @@ UserController.deleteAvatar = (req, res) => {
 
 
 UserController.getUsers = (req, res) => {
-	let count = 20;
-	let offset = 0;
+	let count = 10;
+	let page = 1;
 	if (parseFloat(req.query.q)) {
 		count = req.query.q;
 	}
-	if (parseFloat(req.query.o)) {
-		offset = req.query.o;
+	if (parseFloat(req.query.p)) {
+		page = req.query.p;
 	}
+	const offset = (page - 1) * count;
 	User.find()
 		.sort({ date: -1 })
 		.skip(parseFloat(offset))
@@ -336,7 +337,8 @@ UserController.getUsers = (req, res) => {
 			User.count().exec((errs, counts) => {
 				res.json({
 					users: mappedUsers,
-					counts
+					counts,
+					page
 				})
 			})
 		})

@@ -6,7 +6,7 @@ const UserActions = {};
 
 UserActions.getUsers = createActionThunk(
 	types.GET_USERS,
-	(limit, offset) => axios.get(`/api/users?q=${limit}&o=${offset}`)
+	(page, limit) => axios.get(`/api/users?q=${limit}&p=${page}`)
 );
 
 UserActions.getUser = createActionThunk(types.GET_USER, () =>

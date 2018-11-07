@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, Pagination } from 'antd';
+import queryString from 'query-string';
+import { Table, Pagination, Icon } from 'antd';
 
 const columns = [{
 	title: 'Name',
@@ -14,32 +15,69 @@ const columns = [{
 
 
 class UserTable extends React.Component {
-    state = {
+	constructor(props) {
+		super(props);
+		this.state = {
+			currentPage: Number(queryString.parse(this.props.location.search).page),
+		}
+	}
 
-    };
+	async componentDidMount() {
+		if(!this.state.currentPage) {
+			await this.props.history.push({ pathname: '/userstable/', search: `?page=1`})
+		}
+		if(!this.props.users[this.state.currentPage]) {
+			this.props.handleGetUsers(this.state.currentPage, 10)
+		}
+	}
 
-    componentDidMount() {
-    	this.props.handleGetUsers()
-    }
+	componentDidUpdate() {
+		const queryPage = Number(queryString.parse(this.props.location.search).page)
+		if(queryPage && this.state.currentPage !== queryPage) {
+			this.setState({
+				currentPage: queryPage,
+			});
+		}
+	}
+	
+	onChangePage = async (current) => {
+		this.props.history.push({ pathname: '/userstable/', search: `?page=${current}`})
+		await this.setState({
+			currentPage: current,
+		});
+		if(!this.props.users[this.state.currentPage]) {
+			await this.props.handleGetUsers(current, 10)
+		}
+	}
 
 
-    render() {
-    	const { users, counts }  = this.props.users;
+	render() {
+		const { users, counts }  = this.props;
+		const antIcon = <Icon type="sync" style={{ fontSize: 27 }} spin />;
     	return (
     		<div className="table">
-    			<Table 
+				<Table 
+					style={{minHeight: 600}}
     			bordered 
     			pagination={false}
+    			loading={{
+						indicator: antIcon,
+						spinning: this.props.loading
+					}}
     			columns={columns} 
-    			dataSource={users} 
+    			dataSource={users[this.state.currentPage]} 
     		/>
     			<Pagination 
+					onChange={this.onChangePage}
+					hideOnSinglePage
+					showQuickJumper
+					current={this.state.currentPage}
     				className="table-pagination"  
-    				total={counts} 
+    				total={counts}
     			/>
     		</div>	
     	);
-    }
+	}
 }
 
 export default UserTable;

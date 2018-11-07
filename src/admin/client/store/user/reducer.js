@@ -6,7 +6,7 @@ function UserReducer(
 		checkedAuth: false,
 		isLoggedIn: false,
 		user: {},
-		users: [],
+		users: {},
 		loadingUserState: true,
 		error: {},
 		loading: false,
@@ -59,13 +59,20 @@ function UserReducer(
 			loading: true,
 			error: {},
 		};
-	case `${types.GET_USERS}_COMPLETED`:
+	case `${types.GET_USERS}_COMPLETED`: {
+		const newUsers = {
+			...state.users,  [action.payload.data.page]: action.payload.data.users
+		}
+
 		return {
 			...state,
 			loading: false,
-			users: action.payload.data,
+			users: newUsers,
+			counts: action.payload.data.counts,
+			page: action.payload.data.page,
 			error: {},
 		};
+	}	
 	case `${types.GET_USERS}_FAILED`:
 		return {
 			...state,
