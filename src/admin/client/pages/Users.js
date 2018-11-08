@@ -1,10 +1,10 @@
 import React from 'react';
 import queryString from 'query-string';
-import { Table, Pagination, Icon, Button } from 'antd';
+import { Table, Pagination, Icon, Button, Input} from 'antd';
 // import _ from 'lodash';
 import { EditableContext, EditableCell, EditableFormRow } from '../components/EditableCell';
 
-
+const Search = Input.Search;
 class UserTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -146,7 +146,16 @@ class UserTable extends React.Component {
     	return (
     		<div className="table">
 				<div className="table-header">
-					<p><Icon type="user" />Users: {counts}</p>
+					<div className="table-header-search">
+						<p><Icon type="user" />Users: {counts}</p>
+						<Search
+							style={{maxWidth: 400}}
+							placeholder="input search text"
+							onSearch={value => console.log(value)}
+							enterButton
+						/>
+					</div>
+					
 				</div>
 				<Table 
 					style={{minHeight: 600}}

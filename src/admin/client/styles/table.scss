@@ -7,8 +7,17 @@
 
     &-header {
         padding: 10px;
-        & p {
-            text-align: center;
+        
+        &-search {
+            right: 2px;
+            width: 500px;
+            height: 30px;
+            display: flex;
+            justify-content: space-between;
+
+            & p {
+                margin-top: 3px;
+            }
         }
     }
 }

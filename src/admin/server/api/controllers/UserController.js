@@ -391,5 +391,37 @@ UserController.editUsers = (req, res) => {
 };
 
 
+UserController.handleSearch = (req, res) => {
+	if (req.query.q) {
+		const query = User.find({
+			$or: [
+				{
+					name: {
+						$regex: new RegExp(req.query.q),
+						$options: '-i',
+					},
+				},
+				{
+					email: {
+						$regex: new RegExp(req.query.q),
+						$options: '-i',
+					},
+				},
+				{
+					age: {
+						$regex: new RegExp(req.query.q),
+						$options: '-i',
+					},
+				},
+			],
+		}).sort({ date: -1 });
+		query.exec((err, foundUsers) => {
+			res.json({
+				users: foundUsers,
+			});
+		});
+	}
+};
+
 
 module.exports = UserController;
