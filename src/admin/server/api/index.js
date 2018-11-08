@@ -24,6 +24,7 @@ cloudinary.config({
 
 api.get('/profile', checkJwt, UserController.getprofile);
 api.get('/users', checkJwt, UserController.getUsers);
+api.put('/users', checkJwt, UserController.editUsers);
 api.put('/profile', checkJwt, UserController.editProfile);
 api.get('/profile/:id', checkJwt, UserController.getuserprofile);
 api.get('/verification', UserController.verification);

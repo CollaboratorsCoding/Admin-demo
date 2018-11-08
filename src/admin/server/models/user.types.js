@@ -20,19 +20,6 @@ UserTypes.SignUpForm = {
 		.max(30)
 		.regex(/[a-zA-Z0-9]{3,30}/)
 		.required(),
-	age: Joi.number()
-		.min(18)
-		.required()
-		.options({
-			language: {
-				number: {
-					min: '{{limit}}+ only',
-				},
-			},
-		}),
-	name: Joi.string()
-		.trim()
-		.required(),
 };
 
 UserTypes.SignInForm = {
@@ -53,5 +40,25 @@ UserTypes.SignInForm = {
 		.regex(/[a-zA-Z0-9]{3,30}/)
 		.required(),
 };
+
+
+UserTypes.EditForm = {
+	age: Joi.number()
+		.min(18)
+		.required()
+		.options({
+			language: {
+				number: {
+					min: '{{limit}}+ only',
+				},
+			},
+		}),
+	name: Joi.string()
+		.trim()
+		.required(),
+	role: Joi.string()
+		.trim()
+		.required(),
+}
 
 module.exports = UserTypes;

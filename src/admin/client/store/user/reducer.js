@@ -98,6 +98,53 @@ function UserReducer(
 				false
 			),
 		};
+	case `${types.EDIT_USERS}_START`:
+		return {
+			...state,
+			loading: true,
+			error: {},
+		};
+	case `${types.EDIT_USERS}_COMPLETED`: {
+		// console.log(action.payload.user)
+		const newData = [...state.users[state.page]];
+		const EditUsersPage = newData.map((user) => {
+			if(user.key === action.payload.data.user.key) return action.payload.data.user
+			return user
+		})
+		return {
+			...state,
+			loading: false,
+			users: {
+				...state.users,  [state.page]: EditUsersPage
+			},
+			error: {},
+		};
+	}	
+	case `${types.EDIT_USERS}_FAILED`:
+		return {
+			...state,
+			loading: false,
+			error: {
+				type: _.get(action.payload, 'response.data.type', 'server'),
+				message: _.get(
+					action.payload,
+					'response.data.message',
+					'Oops... Something went wrong 😔'
+				),
+				formData: _.get(
+					action.payload,
+					'response.data.formData',
+					{}
+				),
+			},
+			loadingUserState: false,
+			checkedAuth: true,
+			isLoggedIn: _.get(
+				action.payload,
+				'response.data.isLoggedIn',
+				false
+			),
+		};
 	case `${types.CREATE_USER}_START`:
 		return {
 			...state,

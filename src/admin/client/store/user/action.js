@@ -9,6 +9,11 @@ UserActions.getUsers = createActionThunk(
 	(page, limit) => axios.get(`/api/users?q=${limit}&p=${page}`)
 );
 
+UserActions.editUsers = createActionThunk(
+	types.EDIT_USERS,
+	(data, key) => axios.put(`/api/users?key=${key}`, data)
+);
+
 UserActions.getUser = createActionThunk(types.GET_USER, () =>
 	axios.get(`/api/profile`)
 );

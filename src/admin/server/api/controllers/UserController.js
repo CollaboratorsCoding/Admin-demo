@@ -332,7 +332,7 @@ UserController.getUsers = (req, res) => {
 		.exec((err, users) => {
 			const mappedUsers = users.map(user => ({
 				key: user._id,
-				..._.pick(user, ['name', 'age', 'email']),
+				..._.pick(user, ['name', 'age', 'role', 'email']),
 			}))
 			User.count().exec((errs, counts) => {
 				res.json({
@@ -342,6 +342,52 @@ UserController.getUsers = (req, res) => {
 				})
 			})
 		})
+};
+
+UserController.editUsers = (req, res) => {
+	const key = req.query.key;
+	const restrictedFields = _.omit(req.body, ['name', 'age', 'role']);
+	if (!_.isEmpty(restrictedFields)) {
+		return res
+			.status(403)
+			.json({ type: 'server', message: 'Restricted field' });
+	}
+	const errors = validate(req.body, UserTypes.EditForm);
+	if (errors.error) {
+		return res.status(404).json({ type: 'server', message: errors.error });
+	}
+	return User.findOneAndUpdate(
+		{ _id: key },
+		_.pick(req.body, ['name', 'age', 'role']),
+		{ new: true },
+		(err, user) => {
+			if (err)
+				return res.status(500).json({
+					type: 'server',
+					message: err,
+				});
+
+			const userObject = user.toObject()
+			const updateUser = _.omit(userObject, [
+				'__v',
+				'isVerified',
+				'password',
+				'verificationToken',
+				'resetPasswordToken',
+				'resetPasswordExpires',
+			])
+			return res.json({
+				user: {
+					key: updateUser._id,
+					..._.pick(user, ['name', 'age', 'role', 'email']),
+				},
+				requestSuccess: {
+					message: 'User updated',
+					operation: 'user_edit',
+				}
+			});
+		}
+	);
 };
 
 

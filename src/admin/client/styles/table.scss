@@ -4,4 +4,17 @@
         text-align: right;
         padding: 20px;
     }
+
+    &-header {
+        padding: 10px;
+        & p {
+            text-align: center;
+        }
+    }
+}
+
+.editable-row .ant-form-explain {
+    position: absolute;
+    font-size: 12px;
+    margin-top: -4px;
 }

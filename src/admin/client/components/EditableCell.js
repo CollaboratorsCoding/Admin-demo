@@ -1,10 +1,12 @@
 import React from 'react';
-import { Input, Form } from 'antd';
+import { Input, Form, InputNumber, Select } from 'antd';
+import UserTypes from '../../server/models/user.types';
+import { validateField } from '../../../utils/validate';
 // import _ from 'lodash';
 
-
+const Option = Select.Option;
 const FormItem = Form.Item;
-const EditableContext = React.createContext();
+export const EditableContext = React.createContext();
 
 const EditableRow = ({ form, index, ...props }) => (
 	<EditableContext.Provider value={form}>
@@ -15,104 +17,64 @@ const EditableRow = ({ form, index, ...props }) => (
 export const EditableFormRow = Form.create()(EditableRow);
 
 export class EditableCell extends React.Component {
-	state = {
-		editing: false,
-	}
-
-	componentDidMount() {
-		if (this.props.editable) {
-			document.addEventListener('click', this.handleClickOutside, true);
+	getInput = () => {
+	
+		if (this.props.inputType === 'number') {
+			return <InputNumber />;
 		}
-	}
-
-	componentWillUnmount() {
-		if (this.props.editable) {
-			document.removeEventListener('click', this.handleClickOutside, true);
+		if (this.props.dataIndex === 'role') {
+			return <Select
+				showSearch
+				style={{ width: 100 }}
+				placeholder="Select a person"
+				optionFilterProp="children"
+				filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+			>
+				<Option value="user">user</Option>
+				<Option value="admin">admin</Option>
+			</Select>;
 		}
-	}
-
-	toggleEdit = () => {
-		this.setState((prevState) => ({
-			editing: !prevState.editing
-		}))
-		if (this.state.editing) {
-			this.input.focus();
-		}
-
-	}
-
-	handleClickOutside = (e) => {
-		const { editing } = this.state;
-		if (editing && this.cell !== e.target && !this.cell.contains(e.target)) {
-			this.save();
-		}
-	}
-
-	save = () => {
-		const { record, handleSave } = this.props;
-		this.form.validateFields((error, values) => {
-			if (error) {
-				return;
-			}
-			this.toggleEdit();
-			handleSave({ ...record, ...values });
-		});
-	}
-
+		return <Input />;
+	};
+	
 	render() {
-		const { editing } = this.state;
 		const {
-			editable,
+			editing,
 			dataIndex,
 			title,
+			inputType,
 			record,
 			index,
-			handleSave,
 			...restProps
 		} = this.props;
 		return (
-			<td ref={node => {
-				const e = node
-				return e
-			}	
-			} {...restProps}>
-				{editable ? (
-					<EditableContext.Consumer>
-						{(form) => {
-							this.form = form;
-							return (
-								editing ? (
-									<FormItem style={{ margin: 0 }}>
-										{form.getFieldDecorator(dataIndex, {
-											rules: [{
-												required: true,
-												message: `${title} is required.`,
-											}],
-											initialValue: record[dataIndex],
-										})(
-											<Input
-												ref={node => {
-													const e = node
-													return e
-												}	}
-												onPressEnter={this.save}
-											/>
-										)}
-									</FormItem>
-								) : (
-									<div
-										className="editable-cell-value-wrap"
-										style={{ paddingRight: 24 }}
-										onClick={this.toggleEdit}
-									>
-										{restProps.children}
-									</div>
-								)
-							);
-						}}
-					</EditableContext.Consumer>
-				) : restProps.children}
-			</td>
+			<EditableContext.Consumer>
+				{(form) => {
+					const { getFieldDecorator } = form;
+					return (
+						<td {...restProps}>
+							{editing ? (
+								<FormItem style={{ margin: 0 }}>
+									{getFieldDecorator(dataIndex, {
+										
+										rules: [
+											{
+												validator: (rule, value, cb) =>
+													validateField(
+														UserTypes.EditForm[dataIndex],
+														value,
+														cb
+													),
+											},
+										],
+										initialValue: record[dataIndex],
+									})(this.getInput())}
+								</FormItem>
+							) : restProps.children}
+						</td>
+					);
+				}}
+			</EditableContext.Consumer>
 		);
 	}
 }
