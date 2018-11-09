@@ -1,4 +1,4 @@
-.table {
+.tables {
     background: white;
     & .ant-pagination {
         text-align: right;
@@ -7,16 +7,19 @@
 
     &-header {
         padding: 10px;
+        max-height: 50px;
         
         &-search {
             right: 2px;
-            width: 500px;
+            
             height: 30px;
-            display: flex;
-            justify-content: space-between;
+            display: inline;
+            // justify-content: space-between;
 
             & p {
                 margin-top: 3px;
+                width: 50%;
+                float: left;
             }
         }
     }

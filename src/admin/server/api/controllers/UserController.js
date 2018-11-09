@@ -367,25 +367,32 @@ UserController.editUsers = (req, res) => {
 					message: err,
 				});
 
-			const userObject = user.toObject()
-			const updateUser = _.omit(userObject, [
-				'__v',
-				'isVerified',
-				'password',
-				'verificationToken',
-				'resetPasswordToken',
-				'resetPasswordExpires',
-			])
-			return res.json({
-				user: {
-					key: updateUser._id,
-					..._.pick(user, ['name', 'age', 'role', 'email']),
-				},
-				requestSuccess: {
-					message: 'User updated',
-					operation: 'user_edit',
+			
+			return Image.findOne(
+				{ parentCollection: 'users', parentId: user._id },
+				'publicURL',
+				(errs, image) => {
+					const userObject = user.toObject()
+					const updateUser = _.omit(userObject, [
+						'password',
+						'verificationToken',
+						'resetPasswordToken',
+						'resetPasswordExpires',
+					])
+					updateUser.imageURL = _.get(image, 'publicURL', undefined);
+					return res.json({
+						user: {
+							key: updateUser._id,
+							..._.pick(user, ['name', 'age', 'role', 'email']),
+						},
+						currentUser: key == req.user._id ? updateUser : null,
+						requestSuccess: {
+							message: 'User updated',
+							operation: 'user_edit',
+						},
+					});
 				}
-			});
+			)
 		}
 	);
 };
@@ -407,17 +414,15 @@ UserController.handleSearch = (req, res) => {
 						$options: '-i',
 					},
 				},
-				{
-					age: {
-						$regex: new RegExp(req.query.q),
-						$options: '-i',
-					},
-				},
 			],
 		}).sort({ date: -1 });
 		query.exec((err, foundUsers) => {
+			const mappedUsers = foundUsers.map(user => ({
+				key: user._id,
+				..._.pick(user, ['name', 'age', 'role', 'email']),
+			}))
 			res.json({
-				users: foundUsers,
+				users: mappedUsers,
 			});
 		});
 	}

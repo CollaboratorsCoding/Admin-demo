@@ -1,7 +1,8 @@
 import React from 'react';
 import queryString from 'query-string';
+import axios from 'axios'
 import { Table, Pagination, Icon, Button, Input} from 'antd';
-// import _ from 'lodash';
+import _ from 'lodash';
 import { EditableContext, EditableCell, EditableFormRow } from '../components/EditableCell';
 
 const Search = Input.Search;
@@ -10,8 +11,11 @@ class UserTable extends React.Component {
 		super(props);
 		this.state = {
 			currentPage: Number(queryString.parse(this.props.location.search).page),
-			editingKey: ''
+			editingKey: '',
+			filteredCount: null,
+			filteredUsers: {},
 		}
+		this.startSearch = _.debounce(this.startSearch.bind(this), 500);
 		this.columns =  [{
 			title: 'Name',
 			dataIndex: 'name',
@@ -20,6 +24,7 @@ class UserTable extends React.Component {
 			title: 'Age',
 			dataIndex: 'age',
 			editable: true,
+			width: 60,
 		}, {
 			title: 'Email',
 			dataIndex: 'email',
@@ -89,22 +94,41 @@ class UserTable extends React.Component {
 			});
 		}
 	}
-	
+
 	onChangePage = async (current) => {
 		this.props.history.push({ pathname: '/userstable/', search: `?page=${current}`})
 		await this.setState({
 			currentPage: current,
 		});
-		if(!this.props.users[this.state.currentPage]) {
+
+		if(!this.props.users[this.state.currentPage] && (_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
 			await this.props.handleGetUsers(current, 10)
 		}
 	}
 
-	onSaveEdit(form, key){
+	onSaveEdit = (form, thisKey) => {
+		const { currentPage, filteredUsers } = this.state;
 		form.validateFields((error, row) => {
 			if (error) return;
-			this.props.handleEditUsers(row, key)
-			this.setState({ editingKey: '' });
+			this.props.handleEditUsers(row, thisKey)
+			if((_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
+				const newData = filteredUsers[currentPage] ? filteredUsers[currentPage] : [];
+				const EditUsersPage = newData.map((user) => {
+					if(user.key === thisKey) return {
+						key: thisKey,
+						email: user.email,
+						...row
+					}
+					return user
+				})
+				this.setState({ 
+					filteredUsers: {
+						...filteredUsers, [currentPage]: EditUsersPage
+					},
+					editingKey: '' 
+				});
+			}
+			this.setState({editingKey: ''});
 		});
 	}
 
@@ -113,6 +137,50 @@ class UserTable extends React.Component {
 	cancel = () => {
 		this.setState({ editingKey: '' });
 	};
+
+	handleChange = ({ target: { value } }) => {
+		if (value.length > 3) {
+			this.startSearch(value);
+		} else {
+			this.setState({
+				filteredUsers: {},
+				filteredCount: null
+			});
+			this.props.history.push({ pathname: '/userstable/', search: `?page=${Number(this.props.page)}`})
+			
+		}
+	};
+
+	startSearch(query) {
+		axios(`/api/users/search?q=${query}`)
+			.then(({ data }) => {
+				const pagination = {};
+				data.users.forEach((user, index) => {
+					let count = 1;
+					if((index+1)%10 === 0) {
+						count +=1;
+					}
+					pagination[count] = pagination[count] ? [...pagination[count], user]: [user]
+				})
+				this.setState({
+					filteredUsers: data.users.length
+						? pagination
+						: {1: ['Not found']},
+					filteredCount: data.users.length || 0,
+				});
+
+				this.props.history.push({ pathname: '/userstable/', search: `?page=1`})
+			})
+			.catch(() => {
+				this.props.history.push({ pathname: '/userstable/', search: `?page=${this.state.currentPage}`})
+				this.setState({
+					filteredUsers: {
+						1: ['Not found']
+					},
+					filteredCount: 0
+				});
+			});
+	}
 
 	edit(key) {
 		this.setState({ editingKey: key });
@@ -136,29 +204,30 @@ class UserTable extends React.Component {
 				...col,
 				onCell: record => ({
 					record,
-					inputType: col.dataIndex === 'age' ? 'number' : 'text',
 					dataIndex: col.dataIndex,
 					title: col.title,
 					editing: this.isEditing(record),
 				}),
 			};
 		});
+		const filteredFindUsers = _.get(this.state, 'filteredUsers[1].length', '') ? this.state.filteredUsers : users;
+		const filteredCounts = _.get(this.state, 'filteredUsers[1].length', '')  ? this.state.filteredCount : counts;
     	return (
-    		<div className="table">
-				<div className="table-header">
-					<div className="table-header-search">
-						<p><Icon type="user" />Users: {counts}</p>
+    		<div className="tables">
+				<div className="tables-header">
+					<div className="tables-header-search">
+						<p><Icon type="user" />Users: {filteredCounts}</p>
 						<Search
-							style={{maxWidth: 400}}
+							style={{maxWidth: '50%', float: 'right'}}
 							placeholder="input search text"
-							onSearch={value => console.log(value)}
+							onInput={this.handleChange}
 							enterButton
 						/>
 					</div>
 					
 				</div>
 				<Table 
-					style={{minHeight: 600}}
+					style={{width: '100%'}}
 					bordered
 					components={components}
     			pagination={false}
@@ -167,7 +236,7 @@ class UserTable extends React.Component {
 						spinning: this.props.loading
 					}}
     			columns={columns} 
-    			dataSource={users[this.state.currentPage]} 
+    			dataSource={(_.get(this.state, 'filteredUsers[1][0]', '') === 'Not found') ? [] : filteredFindUsers[this.state.currentPage]} 
     		/>
     			<Pagination 
 					onChange={this.onChangePage}
@@ -175,7 +244,7 @@ class UserTable extends React.Component {
 					showQuickJumper
 					current={this.state.currentPage}
     				className="table-pagination"  
-    				total={counts}
+    				total={filteredCounts}
     			/>
     		</div>	
     	);

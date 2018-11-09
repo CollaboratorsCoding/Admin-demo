@@ -117,6 +117,7 @@ function UserReducer(
 			users: {
 				...state.users,  [state.page]: EditUsersPage
 			},
+			user: action.payload.data.currentUser ? action.payload.data.currentUser : state.user,
 			error: {},
 		};
 	}	

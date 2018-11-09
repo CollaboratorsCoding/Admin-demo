@@ -19,7 +19,7 @@ export const EditableFormRow = Form.create()(EditableRow);
 export class EditableCell extends React.Component {
 	getInput = () => {
 	
-		if (this.props.inputType === 'number') {
+		if (this.props.dataIndex === 'age') {
 			return <InputNumber />;
 		}
 		if (this.props.dataIndex === 'role') {

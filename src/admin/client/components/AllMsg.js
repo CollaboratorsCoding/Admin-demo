@@ -246,7 +246,7 @@ class AllMsg extends React.Component {
 									? filteredMessages
 									: this.props.messages,
 								this.state.currentPage
-							  )}
+							)}
 					</div>
 				</Modal>
 			</div>
