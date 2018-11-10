@@ -21,7 +21,7 @@ const Sidebar = () => (
 						</Link>
 					</li>
 					<li>
-						<Link to="/userstable">
+						<Link to="/userstable/?page=1">
 							<Icon type="user" theme="outlined" />
 							Users
 						</Link>

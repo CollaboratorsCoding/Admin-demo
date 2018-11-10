@@ -127,8 +127,7 @@ class UserTable extends React.Component {
 				this.setState({ 
 					filteredUsers: {
 						...filteredUsers, [currentPage]: EditUsersPage
-					},
-					editingKey: '' 
+					}, 
 				});
 			}
 			this.setState({editingKey: ''});
@@ -215,8 +214,8 @@ class UserTable extends React.Component {
 		});
 		const filteredFindUsers = _.get(this.state, 'filteredUsers[1].length', '') ? this.state.filteredUsers : users;
 		const filteredCounts = _.get(this.state, 'filteredUsers[1].length', '')  ? this.state.filteredCount : counts;
-    	return (
-    		<div className="tables">
+		return (
+			<div>
 				<div className="tables-header">
 					<div className="tables-header-search">
 						<p><Icon type="user" />Users: {filteredCounts}</p>
@@ -229,27 +228,31 @@ class UserTable extends React.Component {
 					</div>
 					
 				</div>
-				<Table 
-					style={{width: '100%'}}
-					bordered
-					components={components}
+				
+    		<div className="tables">
+					<Table 
+						style={{width: '100%'}}
+						bordered
+						components={components}
     			pagination={false}
     			loading={{
-						indicator: antIcon,
-						spinning: this.props.loading
-					}}
-    			columns={columns} 
+							indicator: antIcon,
+							spinning: this.props.loading
+						}}
+						columns={columns} 
+						scroll={{x: 700}}
     			dataSource={(_.get(this.state, 'filteredUsers[1][0]', '') === 'Not found') ? [] : filteredFindUsers[this.state.currentPage]} 
     		/>
     			<Pagination 
-					onChange={this.onChangePage}
-					hideOnSinglePage
-					showQuickJumper
-					current={this.state.currentPage}
+						onChange={this.onChangePage}
+						hideOnSinglePage
+						showQuickJumper
+						current={this.state.currentPage}
     				className="table-pagination"  
     				total={filteredCounts}
     			/>
-    		</div>	
+				</div>	
+			</div>
     	);
 	}
 }
