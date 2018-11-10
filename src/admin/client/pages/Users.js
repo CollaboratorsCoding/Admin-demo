@@ -86,12 +86,15 @@ class UserTable extends React.Component {
 		}
 	}
 
-	componentDidUpdate() {
+	 componentDidUpdate() {
 		const queryPage = Number(queryString.parse(this.props.location.search).page)
 		if(queryPage && this.state.currentPage !== queryPage) {
-			this.setState({
+			 this.setState({
 				currentPage: queryPage,
-			});
+			 });
+			 if(!this.props.users[queryPage] && (_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
+				this.props.handleGetUsers(queryPage, 10)
+			}
 		}
 	}
 
