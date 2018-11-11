@@ -50,7 +50,11 @@ class UserTable extends React.Component {
 								justifyContent: 'space-between',	
 							}}>
 								<Button onClick={() => this.edit(record.key)} type="primary" icon="edit" ghost>Edit</Button>
-								<Button type="danger" icon="delete" ghost>Delete</Button>
+								<Button
+									onClick={() => this.onHandleRemove(record.key) }
+									type="danger"
+									icon="delete"
+									ghost>Delete</Button>
 							</span>
 						)
 							: (
@@ -99,14 +103,14 @@ class UserTable extends React.Component {
 	}
 
 	onChangePage = async (current) => {
-		this.props.history.push({ pathname: '/userstable/', search: `?page=${current}`})
-		await this.setState({
-			currentPage: current,
-		});
-
-		if(!this.props.users[this.state.currentPage] && (_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
+		
+		if(!this.props.users[current] && (_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
 			await this.props.handleGetUsers(current, 10)
 		}
+		this.setState({
+			currentPage: current,
+		});
+		this.props.history.push({ pathname: '/userstable/', search: `?page=${current}`})
 	}
 
 	onSaveEdit = (form, thisKey) => {
@@ -114,7 +118,7 @@ class UserTable extends React.Component {
 		form.validateFields((error, row) => {
 			if (error) return;
 			this.props.handleEditUsers(row, thisKey)
-			if((_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
+			if(filteredUsers[currentPage]) {
 				const newData = filteredUsers[currentPage] ? filteredUsers[currentPage] : [];
 				const EditUsersPage = newData.map((user) => {
 					if(user.key === thisKey) return {
@@ -140,6 +144,36 @@ class UserTable extends React.Component {
 		this.setState({ editingKey: '' });
 	};
 
+	onHandleRemove = id => {
+		const { currentPage, filteredUsers } = this.state;
+		if (filteredUsers[currentPage]) { 
+			const newData = filteredUsers;
+			newData[currentPage] = filteredUsers[currentPage].filter(user => user.key !== id)
+			if (!newData[currentPage][0]) {
+				if (currentPage !== 1) {
+					delete newData[currentPage]
+					this.props.history.push({ pathname: '/userstable/', search: `?page=${currentPage - 1}` })
+				}
+				if (currentPage === 1) newData[1] = ['Not found']
+			}
+			Object.keys(newData).forEach((key, index) => {
+				if (index >= currentPage && newData[index + 1][0]) {
+					newData[index][newData[currentPage].length] = newData[index + 1][0]
+					newData[index + 1].shift()
+
+					if (!newData[index + 1][0]) {
+						delete newData[index + 1]
+					}
+				}
+			})
+			this.setState((prevState) => ({
+				filteredUsers: newData,
+				filteredCount: prevState.filteredCount - 1
+			}));
+			// console.log(newData)
+		}
+	}
+
 	handleChange = ({ target: { value } }) => {
 		if (value.length > 3) {
 			this.startSearch(value);
@@ -157,13 +191,14 @@ class UserTable extends React.Component {
 		axios(`/api/users/search?q=${query}`)
 			.then(({ data }) => {
 				const pagination = {};
+				let count = 0;
 				data.users.forEach((user, index) => {
-					let count = 1;
-					if((index+1)%10 === 0) {
-						count +=1;
+					if (index % 10 === 0) {
+						count+=1
 					}
-					pagination[count] = pagination[count] ? [...pagination[count], user]: [user]
+					pagination[count] = pagination[count] ? [...pagination[count], user] : [user]	
 				})
+				
 				this.setState({
 					filteredUsers: data.users.length
 						? pagination
@@ -212,8 +247,8 @@ class UserTable extends React.Component {
 				}),
 			};
 		});
-		const filteredFindUsers = _.get(this.state, 'filteredUsers[1].length', '') ? this.state.filteredUsers : users;
-		const filteredCounts = _.get(this.state, 'filteredUsers[1].length', '')  ? this.state.filteredCount : counts;
+		const filteredFindUsers = (_.get(this.state, 'filteredUsers[1].length', '')) ? this.state.filteredUsers : users;
+		const filteredCounts = (_.get(this.state, 'filteredUsers[1].length', ''))  ? this.state.filteredCount : counts;
 		return (
 			<div>
 				<div className="tables-header">
@@ -239,8 +274,9 @@ class UserTable extends React.Component {
 							indicator: antIcon,
 							spinning: this.props.loading
 						}}
+						animated
 						columns={columns} 
-						scroll={{x: 700}}
+						scroll={{x: 600}}
     			dataSource={(_.get(this.state, 'filteredUsers[1][0]', '') === 'Not found') ? [] : filteredFindUsers[this.state.currentPage]} 
     		/>
     			<Pagination 
