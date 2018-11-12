@@ -3,6 +3,22 @@ const Joi = require('joi-browser');
 const UserTypes = {};
 
 UserTypes.SignUpForm = {
+	age: Joi.number()
+		.min(18)
+		.required()
+		.options({
+			language: {
+				number: {
+					min: '{{limit}}+ only',
+				},
+			},
+		}),
+	name: Joi.string()
+		.trim()
+		.required(),
+	role: Joi.string()
+		.trim()
+		.required(),
 	email: Joi.string()
 		.email()
 		.required()

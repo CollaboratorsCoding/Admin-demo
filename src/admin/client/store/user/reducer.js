@@ -106,7 +106,7 @@ function UserReducer(
 		};
 	case `${types.EDIT_USERS}_COMPLETED`: {
 		// console.log(action.payload.user)
-		const newData = [...state.users[state.page]];
+		const newData = [...state.users[action.payload.data.page]];
 		const EditUsersPage = newData.map((user) => {
 			if(user.key === action.payload.data.user.key) return action.payload.data.user
 			return user
@@ -115,13 +115,75 @@ function UserReducer(
 			...state,
 			loading: false,
 			users: {
-				...state.users,  [state.page]: EditUsersPage
+				...state.users,  [action.payload.data.page]: EditUsersPage
 			},
+			page: action.payload.data.page,
 			user: action.payload.data.currentUser ? action.payload.data.currentUser : state.user,
 			error: {},
 		};
 	}	
 	case `${types.EDIT_USERS}_FAILED`:
+		return {
+			...state,
+			loading: false,
+			error: {
+				type: _.get(action.payload, 'response.data.type', 'server'),
+				message: _.get(
+					action.payload,
+					'response.data.message',
+					'Oops... Something went wrong 😔'
+				),
+				formData: _.get(
+					action.payload,
+					'response.data.formData',
+					{}
+				),
+			},
+			loadingUserState: false,
+			checkedAuth: true,
+			isLoggedIn: _.get(
+				action.payload,
+				'response.data.isLoggedIn',
+				false
+			),
+		};
+
+	case `${types.REMOVE_USERS}_START`:
+		return {
+			...state,
+			loading: true,
+			error: {},
+		};
+	case `${types.REMOVE_USERS}_COMPLETED`: {
+		const usersData = state.users;
+		const newUsersData = {}
+		if(usersData[action.payload.data.page]) {
+			usersData[action.payload.data.page] = usersData[action.payload.data.page].filter(user => user.key !== action.payload.data.key)
+
+			if(action.payload.data.userObject) {
+				usersData[action.payload.data.page][usersData[action.payload.data.page].length] = action.payload.data.userObject
+			}
+
+			if (!usersData[action.payload.data.page][0]) {
+				if (action.payload.data.page !== 1) {
+					delete usersData[action.payload.data.page]
+				}
+				if (action.payload.data.page === 1) usersData[1] = []
+			}
+		}
+		
+		return {
+			...state,
+			loading: false,
+			users: usersData[action.payload.data.page] ? {
+				...newUsersData,  [action.payload.data.page]: usersData[action.payload.data.page]
+			} : usersData,
+			counts: state.counts-1,
+			page: action.payload.data.page,
+			error: {},
+		};
+	}	
+	case `${types.REMOVE_USERS}_FAILED`:
 		return {
 			...state,
 			loading: false,

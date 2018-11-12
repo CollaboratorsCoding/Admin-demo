@@ -40,6 +40,8 @@ const {
 	sendResetLinkEmail,
 	changePasswordRestore,
 	editUser,
+	removeUsers,
+	changePage,
 	editUsers,
 	uploadAvatar,
 	deleteAvatar,
@@ -228,6 +230,8 @@ const mapDispatchToProps = dispatch =>
 			// USER ACTIONS
 			handleGetUser: getUser,
 			handleGetUsers: getUsers,
+			handleRemoveUsers: removeUsers,
+			handleChangePage: changePage,
 			hendleSendMessage: sendMessage,
 			handleCreateUser: createUser,
 			handleLoginUser: loginUser,

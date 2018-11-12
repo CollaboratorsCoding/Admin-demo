@@ -15,16 +15,16 @@ MessageActions.handleReadChange = createActionThunk(
 
 MessageActions.subscribeUserCounter = () => dispatch => {
 	dispatch({
-	  type: 'socket',
-	  types: [
-		  'USER_COUNTER_SUBSCRIBE',
-		  'USER_COUNTER_SUBSCRIBE_SUCCESS',
-		  'USER_COUNTER_SUBSCRIBE_FAIL'
+		type: 'socket',
+		types: [
+			'USER_COUNTER_SUBSCRIBE',
+			'USER_COUNTER_SUBSCRIBE_SUCCESS',
+			'USER_COUNTER_SUBSCRIBE_FAIL'
 		],
-	  promise: (socket) => socket.on('user_counter', (usersCount) => dispatch({
-		  type: messageType.USER_SUBSCRIBE_COUNTER,
-		  payload: usersCount,
-	  })),
+		promise: (socket) => socket.on('user_counter', (usersCount) => dispatch({
+			type: messageType.USER_SUBSCRIBE_COUNTER,
+			payload: usersCount,
+		})),
 	});
 }
 
@@ -51,14 +51,14 @@ MessageActions.sendMessage = data => (
 
 
 MessageActions.subscribeMessages = () => dispatch => {
-	  dispatch({
+	dispatch({
 		type: 'socket',
 		types: ['RECEIVE', 'RECEIVE_SUCCESS', 'RECEIVE_FAIL'],
 		promise: (socket) => socket.on('message_receive', (message) => dispatch({
 			type: messageType.GET_MSG_SOCKET,
 			payload: message,
 		})),
-	  });
+	});
 }
 
 

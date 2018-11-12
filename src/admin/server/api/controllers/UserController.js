@@ -346,6 +346,7 @@ UserController.getUsers = (req, res) => {
 
 UserController.editUsers = (req, res) => {
 	const key = req.query.key;
+	const page = req.query.p
 	const restrictedFields = _.omit(req.body, ['name', 'age', 'role']);
 	if (!_.isEmpty(restrictedFields)) {
 		return res
@@ -360,39 +361,39 @@ UserController.editUsers = (req, res) => {
 		{ _id: key },
 		_.pick(req.body, ['name', 'age', 'role']),
 		{ new: true },
-		(err, user) => {
+		async (err, user) => {
 			if (err)
 				return res.status(500).json({
 					type: 'server',
 					message: err,
 				});
 
-			
-			return Image.findOne(
-				{ parentCollection: 'users', parentId: user._id },
-				'publicURL',
-				(errs, image) => {
-					const userObject = user.toObject()
-					const updateUser = _.omit(userObject, [
-						'password',
-						'verificationToken',
-						'resetPasswordToken',
-						'resetPasswordExpires',
-					])
-					updateUser.imageURL = _.get(image, 'publicURL', undefined);
-					return res.json({
-						user: {
-							key: updateUser._id,
-							..._.pick(user, ['name', 'age', 'role', 'email']),
-						},
-						currentUser: key == req.user._id ? updateUser : null,
-						requestSuccess: {
-							message: 'User updated',
-							operation: 'user_edit',
-						},
-					});
-				}
-			)
+			const userObject = user.toObject()
+			const updateUser = _.omit(userObject, [
+				'password',
+				'verificationToken',
+				'resetPasswordToken',
+				'resetPasswordExpires',
+			])
+
+			if (key == req.user._id) {
+				const image = await Image.findOne(
+					{ parentCollection: 'users', parentId: user._id },
+					'publicURL',)
+				updateUser.imageURL = _.get(image, 'publicURL', undefined);
+			}
+			return res.json({
+				user: {
+					key: updateUser._id,
+					..._.pick(user, ['name', 'age', 'role', 'email']),
+				},
+				page,
+				currentUser: key == req.user._id ? updateUser : null,
+				requestSuccess: {
+					message: 'User updated',
+					operation: 'user_edit',
+				},
+			});
 		}
 	);
 };
@@ -427,6 +428,37 @@ UserController.handleSearch = (req, res) => {
 		});
 	}
 };
+
+
+UserController.handleRemove = async (req, res) => {
+	let count = 10;
+	let page = 1;
+	const key = req.query.key;
+	if (parseFloat(req.query.q)) {
+		count = req.query.q;
+	}
+	if (parseFloat(req.query.p)) {
+		page = req.query.p;
+	}
+	const offset = page * count;
+	return User.find()
+		.sort({ date: -1 })
+		.skip(parseFloat(offset))
+		.limit(1)
+		.exec((errs, users) => {
+			User.remove({ _id: key }).exec((err) => {
+				if (err) return req.status(500).json({err})
+				if(!users[0]) {
+					return res.status(200).json({userObject: null, page, key});
+				} 
+				const userObject = {
+					key: users[0]._id,
+					..._.pick(users[0], ['name', 'age', 'role', 'email']),
+				}
+				return res.status(200).json({userObject, page, key});
+			})	
+		})
+}
 
 
 module.exports = UserController;

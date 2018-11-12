@@ -85,26 +85,35 @@ class UserTable extends React.Component {
 		if(!this.state.currentPage) {
 			await this.props.history.push({ pathname: '/userstable/', search: `?page=1`})
 		}
-		if(!this.props.users[this.state.currentPage]) {
-			this.props.handleGetUsers(this.state.currentPage, 10)
+		const queryPage = Math.ceil(Number(queryString.parse(this.props.location.search).page))
+		if(!this.props.users[queryPage]) {
+			await this.props.handleGetUsers(queryPage, 10)
+		}
+
+		const maxPage = Math.ceil(this.props.counts/10)
+		if(queryPage > maxPage) {
+			await this.props.history.push({ pathname: '/userstable/', search: `?page=${maxPage}`})
 		}
 	}
 
-	 componentDidUpdate() {
-		const queryPage = Number(queryString.parse(this.props.location.search).page)
+	async componentDidUpdate() {
+		const queryPage = Math.ceil(Number(queryString.parse(this.props.location.search).page))
 		if(queryPage && this.state.currentPage !== queryPage) {
-			 this.setState({
+			this.setState({
 				currentPage: queryPage,
-			 });
-			 if(!this.props.users[queryPage] && (_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
-				this.props.handleGetUsers(queryPage, 10)
+			});
+			if(!this.props.users[queryPage] && !_.get(this.state, 'filteredUsers[1].length', '')) {
+				await this.props.handleGetUsers(queryPage, 10)
 			}
+		}
+		const maxPage = Math.ceil(this.props.counts/10)
+		if(queryPage > maxPage && queryPage !== 1) {
+			await this.props.history.push({ pathname: '/userstable/', search: `?page=${maxPage}`})
 		}
 	}
 
 	onChangePage = async (current) => {
-		
-		if(!this.props.users[current] && (_.get(this.state, 'filteredUsers[1][0]', '') !== 'Not found')) {
+		if(!this.props.users[current] && !_.get(this.state, 'filteredUsers[1].length', '')) {
 			await this.props.handleGetUsers(current, 10)
 		}
 		this.setState({
@@ -115,9 +124,9 @@ class UserTable extends React.Component {
 
 	onSaveEdit = (form, thisKey) => {
 		const { currentPage, filteredUsers } = this.state;
-		form.validateFields((error, row) => {
+		form.validateFields((error, row,) => {
 			if (error) return;
-			this.props.handleEditUsers(row, thisKey)
+			this.props.handleEditUsers(row, thisKey, currentPage)
 			if(filteredUsers[currentPage]) {
 				const newData = filteredUsers[currentPage] ? filteredUsers[currentPage] : [];
 				const EditUsersPage = newData.map((user) => {
@@ -172,6 +181,8 @@ class UserTable extends React.Component {
 			}));
 			// console.log(newData)
 		}
+
+		this.props.handleRemoveUsers(id, currentPage);
 	}
 
 	handleChange = ({ target: { value } }) => {
@@ -265,8 +276,7 @@ class UserTable extends React.Component {
 				</div>
 				
     		<div className="tables">
-					<Table 
-						style={{width: '100%'}}
+					<Table 				
 						bordered
 						components={components}
     			pagination={false}
@@ -276,14 +286,14 @@ class UserTable extends React.Component {
 						}}
 						animated
 						columns={columns} 
-						scroll={{x: 600}}
+						scroll={{x: 600 }}
     			dataSource={(_.get(this.state, 'filteredUsers[1][0]', '') === 'Not found') ? [] : filteredFindUsers[this.state.currentPage]} 
     		/>
     			<Pagination 
 						onChange={this.onChangePage}
 						hideOnSinglePage
 						showQuickJumper
-						current={this.state.currentPage}
+						current={Math.ceil(this.state.currentPage)}
     				className="table-pagination"  
     				total={filteredCounts}
     			/>

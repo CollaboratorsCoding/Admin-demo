@@ -3,7 +3,6 @@ import types from './types';
 import createActionThunk from '../actionThunk';
 
 const UserActions = {};
-
 UserActions.getUsers = createActionThunk(
 	types.GET_USERS,
 	(page, limit) => axios.get(`/api/users?q=${limit}&p=${page}`)
@@ -11,7 +10,12 @@ UserActions.getUsers = createActionThunk(
 
 UserActions.editUsers = createActionThunk(
 	types.EDIT_USERS,
-	(data, key) => axios.put(`/api/users?key=${key}`, data)
+	(data, key, page) => axios.put(`/api/users?key=${key}&p=${page}`, data)
+);
+
+UserActions.removeUsers = createActionThunk(
+	types.REMOVE_USERS,
+	(key, page) => axios.delete(`/api/users?key=${key}&p=${page}`)
 );
 
 UserActions.getUser = createActionThunk(types.GET_USER, () =>
