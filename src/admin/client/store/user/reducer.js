@@ -15,6 +15,12 @@ function UserReducer(
 	action
 ) {
 	switch (action.type) {
+	case types.CHANGE_PAGE:
+		return {
+			...state,
+			page: action.page,
+			error: {},
+		};
 	case `${types.GET_USER}_START`:
 		return {
 			...state,
@@ -117,7 +123,6 @@ function UserReducer(
 			users: {
 				...state.users,  [action.payload.data.page]: EditUsersPage
 			},
-			page: action.payload.data.page,
 			user: action.payload.data.currentUser ? action.payload.data.currentUser : state.user,
 			error: {},
 		};
@@ -179,7 +184,6 @@ function UserReducer(
 				...newUsersData,  [action.payload.data.page]: usersData[action.payload.data.page]
 			} : usersData,
 			counts: state.counts-1,
-			page: action.payload.data.page,
 			error: {},
 		};
 	}	

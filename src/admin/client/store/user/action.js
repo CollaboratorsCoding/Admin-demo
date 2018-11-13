@@ -3,6 +3,13 @@ import types from './types';
 import createActionThunk from '../actionThunk';
 
 const UserActions = {};
+
+UserActions.changePage = (page) => dispatch => {
+	dispatch({
+		type: types.CHANGE_PAGE,
+		page
+	});
+}
 UserActions.getUsers = createActionThunk(
 	types.GET_USERS,
 	(page, limit) => axios.get(`/api/users?q=${limit}&p=${page}`)
