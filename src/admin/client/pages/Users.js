@@ -124,9 +124,9 @@ class UserTable extends React.Component {
 
 	onSaveEdit = (form, thisKey) => {
 		const { currentPage, filteredUsers } = this.state;
-		form.validateFields((error, row,) => {
+		form.validateFields(async (error, row,) => {
 			if (error) return;
-			this.props.handleEditUsers(row, thisKey, currentPage)
+			await this.props.handleEditUsers(row, thisKey, currentPage)
 			if(filteredUsers[currentPage]) {
 				const newData = filteredUsers[currentPage] ? filteredUsers[currentPage] : [];
 				const EditUsersPage = newData.map((user) => {
