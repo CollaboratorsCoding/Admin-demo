@@ -85,19 +85,29 @@ class UserTable extends React.Component {
 		if(!this.state.currentPage) {
 			await this.props.history.push({ pathname: '/userstable/', search: `?page=1`})
 		}
+		if (!_.get(this.state, 'filteredUsers[1].length', '')) {
+			this.props.handleChangePage(this.state.currentPage)
+		}
 		const queryPage = Math.ceil(Number(queryString.parse(this.props.location.search).page))
 		if(!this.props.users[queryPage]) {
 			await this.props.handleGetUsers(queryPage, 10)
 		}
 
 		const maxPage = Math.ceil(this.props.counts/10)
-		if(queryPage > maxPage) {
-			await this.props.history.push({ pathname: '/userstable/', search: `?page=${maxPage}`})
+		if (queryPage > maxPage) {
+			this.props.history.push({ pathname: '/userstable/', search: `?page=${maxPage}` })
 		}
 	}
 
 	async componentDidUpdate() {
 		const queryPage = Math.ceil(Number(queryString.parse(this.props.location.search).page))
+		let count = this.props.counts;
+		if (_.get(this.state, 'filteredUsers[1].length', '')) {
+			count = this.state.filteredCount
+		}
+		if (this.state.currentPage !== queryPage && !_.get(this.state, 'filteredUsers[1].length', '')) {
+			this.props.handleChangePage(queryPage)
+		}
 		if(queryPage && this.state.currentPage !== queryPage) {
 			this.setState({
 				currentPage: queryPage,
@@ -106,15 +116,19 @@ class UserTable extends React.Component {
 				await this.props.handleGetUsers(queryPage, 10)
 			}
 		}
-		const maxPage = Math.ceil(this.props.counts/10)
-		if(queryPage > maxPage && queryPage !== 1) {
-			await this.props.history.push({ pathname: '/userstable/', search: `?page=${maxPage}`})
+		const maxPage = Math.ceil(count / 10)
+		const page = maxPage === 0 ? 1 : maxPage
+		if(queryPage > page) {
+			this.props.history.push({ pathname: '/userstable/', search: `?page=${page}`})
 		}
 	}
 
 	onChangePage = async (current) => {
 		if(!this.props.users[current] && !_.get(this.state, 'filteredUsers[1].length', '')) {
 			await this.props.handleGetUsers(current, 10)
+		}
+		if (!_.get(this.state, 'filteredUsers[1].length', '')) {
+			this.props.handleChangePage(current)
 		}
 		this.setState({
 			currentPage: current,
@@ -186,19 +200,21 @@ class UserTable extends React.Component {
 	}
 
 	handleChange = ({ target: { value } }) => {
-		if (value.length > 3) {
+		if (value.length > 2) {
 			this.startSearch(value);
 		} else {
 			this.setState({
 				filteredUsers: {},
 				filteredCount: null
 			});
-			this.props.history.push({ pathname: '/userstable/', search: `?page=${Number(this.props.page)}`})
-			
+			this.props.history.push({ pathname: '/userstable/', search: `?page=${Number(this.props.page)}`})	
 		}
 	};
 
 	startSearch(query) {
+		if ([...query].length === 3) {
+			return
+		}
 		axios(`/api/users/search?q=${query}`)
 			.then(({ data }) => {
 				const pagination = {};

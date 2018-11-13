@@ -29,6 +29,9 @@ class SearchInput extends React.Component {
 	}
 
 	startSearch(query) {
+		if ([...query].length === 3) {
+			return
+		}
 		axios(`/api/search?q=${query}`)
 			.then(({ data }) => {
 				this.setState({
