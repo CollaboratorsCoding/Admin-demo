@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Icon } from 'antd';
 
-const Sidebar = () => (
+const Sidebar = ({
+	isLoggedIn
+}) => (
 	<aside className="menu-sidebar">
 		<Link to="/">
 			<div className="logo">
@@ -20,12 +22,15 @@ const Sidebar = () => (
 							Send-message
 						</Link>
 					</li>
-					<li>
-						<Link to="/userstable/?page=1">
-							<Icon type="user" theme="outlined" />
-							Users
-						</Link>
-					</li>
+					{isLoggedIn ? (
+						<li>
+							<Link to="/userstable/?page=1">
+								<Icon type="user" theme="outlined" />
+						Users
+							</Link>
+						</li>
+					) : null}
+					
 					{/* <li>
 						<Link to="/">
 							<Icon type="calendar" theme="outlined" />

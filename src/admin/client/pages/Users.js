@@ -284,7 +284,6 @@ class UserTable extends React.Component {
 							indicator: antIcon,
 							spinning: this.props.loading
 						}}
-						animated
 						columns={columns} 
 						scroll={{x: 600 }}
     			dataSource={(_.get(this.state, 'filteredUsers[1][0]', '') === 'Not found') ? [] : filteredFindUsers[this.state.currentPage]} 

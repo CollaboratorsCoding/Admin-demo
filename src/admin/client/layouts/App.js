@@ -127,7 +127,7 @@ class App extends React.Component {
 
 		return (
 			<div className="page-wrapper">
-				<Sidebar />
+				<Sidebar isLoggedIn={this.props.isLoggedIn} />
 				<div className="page-container">
 					<Navigation
 						isLoggedIn={props.isLoggedIn}
