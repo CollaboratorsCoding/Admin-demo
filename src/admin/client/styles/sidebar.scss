@@ -6,6 +6,7 @@
 	bottom: 0;
 	background: #fff;
 	overflow-y: auto;
+	z-index: 100
 }
 
 .menu-sidebar .logo {
@@ -82,3 +83,23 @@
 .navbar-sidebar .navbar__list li.active > a {
 	color: #4272d7;
 }
+
+.open-sidebar {
+	display: none;
+}
+
+@media (max-width: 991px) {
+	.menu-sidebar {
+		display: none;
+	}
+
+	.open-sidebar {
+		display: block;
+		position: absolute;
+		z-index: 1000;
+		top: 105px;
+		left: 10px;
+	}
+}
+
+

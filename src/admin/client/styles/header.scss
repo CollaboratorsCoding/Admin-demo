@@ -139,7 +139,7 @@
 	justify-content: space-between;
 }
 
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (max-width: 1199px) {
 	.header-wrap .account-item > .content {
 		display: none;
 	}
@@ -189,7 +189,9 @@
 @media (max-width: 991px) {
 	.header-button {
 		margin-top: 30px;
+		margin-left: auto;
 		width: 100%;
+		padding: 10px;
 		-webkit-box-pack: justify;
 		-webkit-justify-content: space-between;
 		-moz-box-pack: justify;
@@ -424,7 +426,7 @@ $emailListBG: #fff;
 .email-dropdown {
 	position: absolute;
 	z-index: 9999;
-	min-width: 340px;
+	min-width: 300px;
 	background: #fff;
 	-webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
@@ -437,7 +439,7 @@ $emailListBG: #fff;
 	transition: all 0.4s ease;
 
 	top: 35px;
-	right: -44px;
+	right: -133px;
 }
 // .email-dropdown:before {
 // 	content: '';
@@ -670,5 +672,18 @@ $emailListBG: #fff;
 	& li {
 		margin-left: 10px;
 		list-style-type: none;
+	}
+}
+
+.right-menu {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+@media (max-width: 990px) {
+	.right-menu {
+		width: 200px;
+		margin-left: auto;
 	}
 }

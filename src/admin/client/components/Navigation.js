@@ -13,17 +13,19 @@ const Navigation = ({
 	<header className="header-desktop">
 		<div className="section__content section__content--p30">
 			<div className="header-wrap">
-				<SearchInput />
+				{isLoggedIn ? (<SearchInput />) : null}
 				<div className="header-button">
-					{isLoggedIn ? (
-						<AuthNavigation
-							user={user}
-							handleGetMessages={handleGetMessages}
-							subscribeMessages={subscribeMessages}
-						/>
-					) : (
-						<PublicNavigation />
-					)}
+					<div className="right-menu">
+						{isLoggedIn ? (
+							<AuthNavigation
+								user={user}
+								handleGetMessages={handleGetMessages}
+								subscribeMessages={subscribeMessages}
+							/>
+						) : (
+							<PublicNavigation />
+						)}
+					</div>
 				</div>
 			</div>
 		</div>
