@@ -18,7 +18,7 @@
 }
 .page-container {
 	background: #e5e5e5;
-	padding-left: 300px;
+	transition: all .2s;
 }
 
 .main-content {
@@ -54,13 +54,10 @@
 }
 
 
-@media (max-width: 991px) {
+@media (max-width: 578px) {
 	.main-content {
 		padding-top: 50px;
 	}
-}
-
-@media (max-width: 991px) {
 	.page-container {
 		position: relative;
 		// top: 88px;
