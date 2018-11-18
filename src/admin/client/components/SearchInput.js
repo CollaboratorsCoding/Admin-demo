@@ -52,7 +52,7 @@ class SearchInput extends React.Component {
 				<div className="input-wrapper">
 					<input
 						className="basic-input basic-input--xl"
-						placeholder="input search user name"
+						placeholder="input search"
 						value={value}
 						onChange={this.handleChange}
 					/>

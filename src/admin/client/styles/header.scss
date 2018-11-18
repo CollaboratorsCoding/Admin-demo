@@ -14,26 +14,10 @@
 	transition: all 0.5s ease;
 }
 .basic-input--xl {
-	min-width: 935px;
+	width: 60%;
 }
 
-@media (max-width: 1600px) {
-	.basic-input--xl {
-		min-width: 350px;
-	}
-}
 
-@media (max-width: 991px) {
-	.basic-input--xl {
-		min-width: 350px;
-	}
-}
-
-@media (max-width: 767px) {
-	.basic-input--xl {
-		min-width: 150px;
-	}
-}
 .au-btn--submit {
 	position: relative;
 	right: 0;
@@ -95,14 +79,22 @@
 	transform: translateY(-50%);
 }
 
-@media (max-width: 578px) {
+
+@media (max-width: 992px) {
 	.header-desktop {
 		position: relative;
 		top: 0;
 		left: 0 !important;
-		height: 170px;
 	}
 }
+
+@media (max-width: 578px) {
+	.header-desktop {
+		height: 130px;
+	}
+}
+
+
 
 .header-desktop .mess-dropdown {
 	top: 51px;
@@ -116,10 +108,9 @@
 	top: 51px;
 }
 
-@media (max-width: 578px) {
-	.logo {
-		text-align: center;
-	}
+.search-wrapper {
+	width: 60%;
+	text-align: center;
 }
 
 .header-wrap {
@@ -177,6 +168,10 @@
 	}
 }
 
+
+
+
+
 .header-button {
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -190,9 +185,9 @@
 	align-items: center;
 }
 
-@media (max-width: 578px) {
+@media (max-width: 992px) {
 	.header-button {
-		margin-top: 30px;
+		margin-top: 10px;
 		margin-left: auto;
 		// width: 100%;
 		padding: 10px;
@@ -228,7 +223,7 @@
 	}
 }
 
-@media (max-width: 991px) {
+@media (max-width: 992px) {
 	.noti-wrap .noti__item:last-child {
 		margin-right: 0;
 	}
@@ -663,6 +658,11 @@ $emailListBG: #fff;
 	& .message-tags {
 		display: inline;
 	}
+	@media (max-width: 578px) {
+		& .message-tags {
+			display: none;
+		}
+	}
 }
 
 .pagination {
@@ -686,18 +686,22 @@ $emailListBG: #fff;
 }
 
 .trigger {
-	font-size: 18px;
-	line-height: 64px;
-	padding: 0 24px;
-	cursor: pointer;
-	transition: color .3s;
+	display: none !important;
 }
 
 .trigger:hover {
 	color: #1890ff;
 }
 
-@media (max-width: 990px) {
+@media (max-width: 992px) {
+	.trigger {
+		display: block !important;
+		font-size: 18px;
+		line-height: 64px;
+		padding: 0 24px;
+		cursor: pointer;
+		transition: color .3s;
+	}
 	.right-menu {
 		width: 200px;
 		margin-left: auto;

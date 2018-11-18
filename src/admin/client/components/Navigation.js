@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Icon } from 'antd';
 import PublicNavigation from './PublicNavigation';
 import AuthNavigation from './AuthNavigation';
 import SearchInput from './SearchInput';
@@ -9,12 +9,20 @@ const Navigation = ({
 	isLoggedIn,
 	handleGetMessages,
 	subscribeMessages,
+	collapsed,
+	openSidebar
 }) => (
 	<header className="header-desktop">
 		<div className="section__content section__content--p30">
 			<div className="header-wrap">
+				<Icon
+					className="trigger"
+					type={collapsed ? 'menu-unfold' : 'menu-fold'}
+					onClick={openSidebar}
+				/>
 				{isLoggedIn ? (<SearchInput />) : null}
 				<div className="header-button">
+				
 					<div className="right-menu">
 						{isLoggedIn ? (
 							<AuthNavigation

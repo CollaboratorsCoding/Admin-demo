@@ -18,7 +18,7 @@
 }
 .page-container {
 	background: #e5e5e5;
-	transition: all .2s;
+	padding-left: 300px;
 }
 
 .main-content {
@@ -54,7 +54,7 @@
 }
 
 
-@media (max-width: 578px) {
+@media (max-width: 992px) {
 	.main-content {
 		padding-top: 50px;
 	}

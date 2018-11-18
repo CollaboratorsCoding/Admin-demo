@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 import { Route, withRouter, Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Modal, notification, Icon } from 'antd';
+import { Modal, notification } from 'antd';
 
 // Components
-// import Navigation from '../components/Navigation';
+import Navigation from '../components/Navigation';
 import Sidebar from '../components/Sidebar';
 
 // HOC's
@@ -32,9 +32,6 @@ import RestorePassword from '../pages/RestorePassword';
 import UserActions from '../store/user/action';
 import MessageActions from '../store/msg/action';
 
-import PublicNavigation from '../components/PublicNavigation';
-import AuthNavigation from '../components/AuthNavigation';
-import SearchInput from '../components/SearchInput';
 
 const {
 	getUser,
@@ -70,7 +67,10 @@ class App extends React.Component {
 
 	// ERROR && SUCCESS MESSAGES
 	componentDidUpdate(prevProps) {
-		const { requestSuccess, error, history } = this.props;
+		const { requestSuccess, error, history, location } = this.props;
+		if (prevProps.location.pathname !== location.pathname && this.state.breakpoint) {
+			this.setState({collapsed: true})
+		}
 
 		// ERROR with type 'server' HANDLER
 		if (
@@ -99,11 +99,24 @@ class App extends React.Component {
 		}
 	}
 
-	toggle = () => {
-		this.setState(prevState => ({
-		  collapsed: !prevState.collapsed,
-		}))
-	  }
+	openSidebar = () => {
+		this.setState({
+		  collapsed: false,
+		})
+	}
+	
+	closeSidebar = () => {
+		this.setState({
+		  collapsed: true,
+		})
+	}
+	
+	breakpointSidebar = broken => {
+		this.setState({
+			breakpoint: broken,
+			collapsed: broken,
+		  })
+	}
 
 	// setAfterLoginPath(afterLoginPath) {
 	// 	this.setState({ afterLoginPath });
@@ -137,34 +150,20 @@ class App extends React.Component {
 
 		return (
 			<div className="page-wrapper">
-				<Sidebar collapsed={this.state.collapsed} isLoggedIn={this.props.isLoggedIn} />
-				<div className="page-container" style={this.state.collapsed ? {marginLeft: 0} : {marginLeft: 300}}>
-					<header className="header-desktop" style={this.state.collapsed ? {left: 0} : {left: 300}}>
-						<div className="section__content section__content--p30">
-							<div className="header-wrap">
-								<Icon
-									className="trigger"
-									type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-									onClick={this.toggle}
-								/>
-								{isLoggedIn ? (<SearchInput />) : null}
-								<div className="header-button">
-								
-									<div className="right-menu">
-										{isLoggedIn ? (
-											<AuthNavigation
-												user={user}
-												handleGetMessages={this.props.handleGetMessages}
-												subscribeMessages={this.props.subscribeMessages}
-											/>
-										) : (
-											<PublicNavigation />
-										)}
-									</div>
-								</div>
-							</div>
-						</div>
-					</header>
+				<Sidebar
+					collapsed={this.state.collapsed}
+					isLoggedIn={this.props.isLoggedIn}
+					closeSidebar={this.closeSidebar}
+					breakpointSidebar={this.breakpointSidebar}
+
+				/>
+				<div className="page-container">
+					<Navigation
+						isLoggedIn={props.isLoggedIn}
+						user={props.user}
+						openSidebar={this.openSidebar}
+						collapsed={this.state.collapsed}
+					/>
 					{activationModal}
 					<div className="main-content">
 						<div className="section__content section__content--p30">
