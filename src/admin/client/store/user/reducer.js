@@ -15,6 +15,12 @@ function UserReducer(
 	action
 ) {
 	switch (action.type) {
+	case types.USER_SUBSCRIBE_COUNTER: {
+		return {
+			...state,
+			userCount: action.payload,
+		};
+	}
 	case types.CHANGE_PAGE:
 		return {
 			...state,
@@ -30,6 +36,7 @@ function UserReducer(
 		return {
 			...state,
 			user: _.get(action.payload, 'data.user', {}),
+			counts: action.payload.data.counts,
 			loadingUserState: false,
 			checkedAuth: true,
 			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),

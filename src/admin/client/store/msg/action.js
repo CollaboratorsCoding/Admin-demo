@@ -13,29 +13,7 @@ MessageActions.handleReadChange = createActionThunk(
 	data => axios.put(`/api/messages`, data)
 );
 
-MessageActions.subscribeUserCounter = () => dispatch => {
-	dispatch({
-		type: 'socket',
-		types: [
-			'USER_COUNTER_SUBSCRIBE',
-			'USER_COUNTER_SUBSCRIBE_SUCCESS',
-			'USER_COUNTER_SUBSCRIBE_FAIL'
-		],
-		promise: (socket) => socket.on('user_counter', (usersCount) => dispatch({
-			type: messageType.USER_SUBSCRIBE_COUNTER,
-			payload: usersCount,
-		})),
-	});
-}
 
-MessageActions.getCount = () => 
-	(
-		{
-			type: 'socket',
-			types: ['GET_COUNT', 'GET_COUNT_SUCCESS', 'GET_COUNT_FAIL'],
-			promise: socket => socket.emit('get_count'),
-		}
-	)
 
 MessageActions.sendMessage = data => (
 	{

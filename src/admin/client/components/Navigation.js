@@ -10,6 +10,7 @@ const Navigation = ({
 	handleGetMessages,
 	subscribeMessages,
 	collapsed,
+	userCount,
 	openSidebar
 }) => (
 	<header className="header-desktop">
@@ -27,6 +28,7 @@ const Navigation = ({
 						{isLoggedIn ? (
 							<AuthNavigation
 								user={user}
+								userCount={userCount}
 								handleGetMessages={handleGetMessages}
 								subscribeMessages={subscribeMessages}
 							/>

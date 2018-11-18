@@ -10,7 +10,11 @@ import MessageActions from '../store/msg/action';
 
 import AllMsg from './AllMsg';
 
-const { getMessages, subscribeMessages, handleReadChange, subscribeUserCounter, getCount } = MessageActions;
+const {
+	getMessages,
+	subscribeMessages,
+	handleReadChange
+} = MessageActions;
 
 
 class AuthNavigation extends React.Component {
@@ -21,13 +25,12 @@ class AuthNavigation extends React.Component {
 		};
 		this.showModal = this.showModal.bind(this);
 		this.handleCancelModal = this.handleCancelModal.bind(this);
-		this.props.subscribeUserCounter();
+		
 	}
 
 	componentDidMount = () => {
 		this.props.handleGetMessages(3);
 		this.props.subscribeMessages();
-		this.props.getCount();
 	};
 
 	showModal = async (id, isRead) => {
@@ -203,9 +206,7 @@ const mapDispatchToProps = dispatch =>
 		{
 			// MESSAGE ACTIONS
 			handleGetMessages: getMessages,
-			subscribeUserCounter,
 			subscribeMessages,
-			getCount,
 			handleReadChange,
 		},
 		dispatch

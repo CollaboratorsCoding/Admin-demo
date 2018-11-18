@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col , Icon} from 'antd';
 
-const HomePage = () => (
+const HomePage = ({userCount, counts}) => (
 	<div>
 		<Row>
 			<Col span={24}>
@@ -17,7 +17,7 @@ const HomePage = () => (
 							<Icon type="idcard" />
 						</div>
 						<div className="text">
-							<h2>86</h2>
+							<h2>{counts}</h2>
 							<span>Registered users</span>
 						</div>
 					</div>
@@ -32,7 +32,7 @@ const HomePage = () => (
 							<Icon type="user" />
 						</div>
 						<div className="text">
-							<h2>2</h2>
+							<h2>{userCount}</h2>
 							<span>Online users</span>
 						</div>
 					</div>

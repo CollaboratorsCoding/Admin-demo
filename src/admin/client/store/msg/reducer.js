@@ -47,13 +47,6 @@ function MsgReducer(
 			unreadCount: state.unreadCount + 1,
 		};
 	}
-
-	case `${messageType.USER_SUBSCRIBE_COUNTER}`: {
-		return {
-			...state,
-			userCount: action.payload,
-		};
-	}
 	case `${messageType.CHANGE_MSG_READ}_COMPLETED`: {
 		const messageIndex = _.findIndex(
 			state.messages,

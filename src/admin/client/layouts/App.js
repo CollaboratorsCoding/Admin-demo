@@ -47,6 +47,8 @@ const {
 	uploadAvatar,
 	deleteAvatar,
 	getUsers,
+	getCount,
+	subscribeUserCounter
 } = UserActions;
 
 const { sendMessage } = MessageActions
@@ -55,6 +57,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { afterLoginPath: null, collapsed: false, };
+		this.props.subscribeUserCounter();
 		// this.setAfterLoginPath = this.setAfterLoginPath.bind(this);
 	}
 
@@ -64,6 +67,10 @@ class App extends React.Component {
 			handleGetUser();
 		}
 	}
+
+	componentDidMount = () => {
+		this.props.getCount();
+	};
 
 	// ERROR && SUCCESS MESSAGES
 	componentDidUpdate(prevProps) {
@@ -124,7 +131,7 @@ class App extends React.Component {
 
 	render() {
 		const { props, state } = this;
-		const { checkedAuth, user, isLoggedIn } = this.props;
+		const { checkedAuth, user, isLoggedIn, userCount } = this.props;
 		if (props.loadingUserState) return null;
 		let activationModal = null;
 
@@ -161,6 +168,7 @@ class App extends React.Component {
 					<Navigation
 						isLoggedIn={props.isLoggedIn}
 						user={props.user}
+						userCount={userCount}
 						openSidebar={this.openSidebar}
 						collapsed={this.state.collapsed}
 					/>
@@ -270,6 +278,8 @@ const mapDispatchToProps = dispatch =>
 			handleEditUser: editUser,
 			handleEditUsers: editUsers,
 			sendResetLinkEmail,
+			subscribeUserCounter,
+			getCount,
 			changePasswordRestore,
 			handleUploadAvatar: uploadAvatar,
 			handleDeleteAvatar: deleteAvatar,

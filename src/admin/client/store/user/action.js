@@ -4,6 +4,31 @@ import createActionThunk from '../actionThunk';
 
 const UserActions = {};
 
+
+UserActions.subscribeUserCounter = () => dispatch => {
+	dispatch({
+		type: 'socket',
+		types: [
+			'USER_COUNTER_SUBSCRIBE',
+			'USER_COUNTER_SUBSCRIBE_SUCCESS',
+			'USER_COUNTER_SUBSCRIBE_FAIL'
+		],
+		promise: (socket) => socket.on('user_counter', (usersCount) => dispatch({
+			type: types.USER_SUBSCRIBE_COUNTER,
+			payload: usersCount,
+		})),
+	});
+}
+
+UserActions.getCount = () => 
+	(
+		{
+			type: 'socket',
+			types: ['GET_COUNT', 'GET_COUNT_SUCCESS', 'GET_COUNT_FAIL'],
+			promise: socket => socket.emit('get_count'),
+		}
+	)
+
 UserActions.changePage = (page) => dispatch => {
 	dispatch({
 		type: types.CHANGE_PAGE,

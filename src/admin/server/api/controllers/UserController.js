@@ -66,7 +66,8 @@ UserController.logout = (req, res) => {
 	res.send("ok")
 };
 
-UserController.getprofile = (req, res) => {
+UserController.getprofile = async (req, res) => {
+	const counts = await User.count();
 	Image.findOne(
 		{ parentCollection: 'users', parentId: req.user._id },
 		'publicURL',
@@ -80,6 +81,7 @@ UserController.getprofile = (req, res) => {
 					'resetPasswordToken',
 					'resetPasswordExpires',
 				]),
+				counts,
 				isLoggedIn: !!req.user,
 			});
 		}
