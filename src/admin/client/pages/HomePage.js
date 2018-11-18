@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col , Icon} from 'antd';
 
 const HomePage = ({userCount, counts}) => (
-	<div>
+	<>
 		<Row>
 			<Col span={24}>
 				<h2 className="overview--heading">Welcome to AdminDemo</h2>
@@ -37,11 +37,9 @@ const HomePage = ({userCount, counts}) => (
 						</div>
 					</div>
 				</div>
-			</div>
-		
-			
+			</div>	
 		</div>
-	</div>
+	</>
 );
 
 export default HomePage;

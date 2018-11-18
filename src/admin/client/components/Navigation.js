@@ -9,7 +9,6 @@ const Navigation = ({
 	isLoggedIn,
 	handleGetMessages,
 	subscribeMessages,
-	collapsed,
 	userCount,
 	openSidebar
 }) => (
@@ -18,7 +17,7 @@ const Navigation = ({
 			<div className="header-wrap">
 				<Icon
 					className="trigger"
-					type={collapsed ? 'menu-unfold' : 'menu-fold'}
+					type='menu-unfold'
 					onClick={openSidebar}
 				/>
 				{isLoggedIn ? (<SearchInput />) : null}

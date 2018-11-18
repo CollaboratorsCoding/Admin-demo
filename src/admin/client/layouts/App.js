@@ -56,7 +56,7 @@ const { sendMessage } = MessageActions
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { afterLoginPath: null, collapsed: false, };
+		this.state = { afterLoginPath: null, };
 		this.props.subscribeUserCounter();
 		// this.setAfterLoginPath = this.setAfterLoginPath.bind(this);
 	}

@@ -1,7 +1,7 @@
 .overview-wrap {
 	display: flex;
 	margin: auto;
-	max-width: 800px;
+	max-width: 720px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -48,7 +48,7 @@
 	border: 1px solid #e5e5e5;
 	margin-bottom: 40px;
 	min-height: 150px;
-	min-width: 350px;
+	width: 320px;
 	display: flex;
 	align-items: center;
 	.overview__inner {
