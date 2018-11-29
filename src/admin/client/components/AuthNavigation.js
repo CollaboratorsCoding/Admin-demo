@@ -31,6 +31,7 @@ class AuthNavigation extends React.Component {
 	componentDidMount = () => {
 		this.props.handleGetMessages(3);
 		this.props.subscribeMessages();
+		this.props.getCount();
 	};
 
 	showModal = async (id, isRead) => {

@@ -68,9 +68,7 @@ class App extends React.Component {
 		}
 	}
 
-	componentDidMount = () => {
-		this.props.getCount();
-	};
+	
 
 	// ERROR && SUCCESS MESSAGES
 	componentDidUpdate(prevProps) {
@@ -167,6 +165,7 @@ class App extends React.Component {
 				<div className="page-container">
 					<Navigation
 						isLoggedIn={props.isLoggedIn}
+						getCount={this.props.getCount}
 						user={props.user}
 						userCount={userCount}
 						openSidebar={this.openSidebar}

@@ -13,19 +13,27 @@ const socketInit = session => {
 		}
 		)
 	);
-	io.on('connection', socket => {
+
+	io.use((socket, next) => {
 		connectedUsers.push({
 			isAdmin: !!socket.handshake.session.token,
 			socketId: socket.id,
 		});
-		
 		if (socket.handshake.session.token) {
 			socket.join('admins');
 		}
+		return next()
+	}).on('connection', socket => {
 		console.log('User connected', connectedUsers, connectedUsers.length);
 		io.to('admins').emit('user_counter', connectedUsers.length) 
 		socket.on('get_count', () => {
-			io.to('admins').emit('user_counter', connectedUsers.length)
+			socket.handshake.session.reload((err) => {
+				if(err) return console.log(err);
+				if (socket.handshake.session.token) {
+					socket.join('admins');
+				}
+				return io.to('admins').emit('user_counter', connectedUsers.length)
+			});
 		});
 
 		socket.on('message_send', data => {

@@ -226,8 +226,14 @@ function UserReducer(
 			error: {},
 		};
 	case `${types.CREATE_USER}_COMPLETED`:
-		window.location.reload(true);
-		return state
+		return {
+			...state,
+			user: _.get(action.payload, 'data.user', {}),
+			counts: action.payload.data.counts,
+			loading: false,
+			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
+			error: {},
+		};
 	case `${types.CREATE_USER}_FAILED`:
 		return {
 			...state,
@@ -246,6 +252,7 @@ function UserReducer(
 			},
 			loading: false,
 		};
+
 	case `${types.EDIT_USER}_START`:
 		return {
 			...state,
@@ -295,8 +302,14 @@ function UserReducer(
 			loading: true,
 		};
 	case `${types.LOGIN_USER}_COMPLETED`:
-		window.location.reload(true);
-		return state
+		return {
+			...state,
+			user: _.get(action.payload, 'data.user', {}),
+			counts: action.payload.data.counts,
+			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
+			loading: false,
+			error: {},
+		};
 	case `${types.LOGIN_USER}_FAILED`:
 		return {
 			...state,
@@ -323,8 +336,18 @@ function UserReducer(
 			requestSuccess: {},
 		};
 	case `${types.LOGOUT_USER}_COMPLETED`:
-		window.location.reload(true);
-		return state
+		return {
+			...state,
+			user: {},
+			error: {},
+			loading: false,
+			checkedAuth: true,
+			isLoggedIn: false,
+			requestSuccess: _.get(action.payload, 'data.requestSuccess', {
+				operation: 'generic',
+				message: 'Success. Operation Completed',
+			}),
+		};
 	case `${types.LOGOUT_USER}_FAILED`:
 		return {
 			...state,
@@ -349,6 +372,7 @@ function UserReducer(
 				),
 			},
 		};
+
 	case `${types.RESTORE_PASSWORD_USER}_START`:
 		return {
 			...state,

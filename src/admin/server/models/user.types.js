@@ -16,9 +16,6 @@ UserTypes.SignUpForm = {
 	name: Joi.string()
 		.trim()
 		.required(),
-	role: Joi.string()
-		.trim()
-		.required(),
 	email: Joi.string()
 		.email()
 		.required()

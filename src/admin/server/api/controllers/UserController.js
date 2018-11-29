@@ -37,7 +37,15 @@ UserController.signup = (req, res, next) => {
 			// req.session.adminData = {
 			// 	name: user.name
 			// }
-			return res.send("ok")
+			return res.json({
+				isLoggedIn: req.isAuthenticated(),
+				user: _.omit(user.toObject(), [
+					'password',
+					'verificationToken',
+					'resetPasswordToken',
+					'resetPasswordExpires',
+				]),
+			});
 		});
 	})(req, res, next);
 };
@@ -47,23 +55,49 @@ UserController.signin = (req, res, next) => {
 		if (error) {
 			return res.status(error.status).json(error);
 		}
-		return req.login(user, loginErr => {
+		return req.login(user, async loginErr => {
 			if (loginErr) return next(loginErr);
 			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+			const counts = await User.count();
 			req.session.token = token;
-			// req.session.adminData = {
-			// 	name: user.name
-			// }
-			return res.status(200).send("ok")	
-		});
+			req.session.adminData = {
+				name: user.name
+			}
+			return Image.findOne(
+				{ parentCollection: 'users', parentId: user._id },
+				'publicURL',
+				(err, image) => {
+					const userObject = user.toObject();
+					userObject.imageURL = _.get(image, 'publicURL', undefined);
+					return res.json({
+						isLoggedIn: req.isAuthenticated(),
+						counts,
+						user: _.omit(userObject, [
+							'password',
+							'verificationToken',
+							'resetPasswordToken',
+							'resetPasswordExpires',
+						])
+					});
+				}
+			)
+		})
+
 	})(req, res, next);
 };
 
 UserController.logout = (req, res) => {
 	req.logout();
 	req.session.token = null;
-	// req.session.adminData = null;
-	res.send("ok")
+	req.session.adminData = null;
+	res.json({
+		requestSuccess: {
+			message: 'You are Logged Out now',
+			operation: 'user_logout',
+			redirectURL: '/login',
+		},
+	});
+
 };
 
 UserController.getprofile = async (req, res) => {
