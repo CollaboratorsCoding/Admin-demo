@@ -3,11 +3,11 @@
 	"version": "0.0.2",
 	"private": true,
 	"scripts": {
-		"dev-admin": "cross-env APP_NAME=admin node scripts/start.js",
+		"dev:react": "cross-env APP_NAME=admin node scripts/start.js",
 		"build": "cross-env APP_NAME=admin node scripts/build.js",
 		"build-app": "node scripts/build-app.js",
 		"start": "cross-env NODE_ENV=production node bin/www",
-		"dev": "nodemon --inspect --watch src/admin/server --watch src/socketApi --watch src/utils --watch src/express.js --watch src/middlewares"
+		"dev:node": "nodemon --inspect --watch src/admin/server --watch src/socketApi --watch src/utils --watch src/express.js --watch src/middlewares"
 	},
 	"dependencies": {
 		"antd": "^3.10.0",
