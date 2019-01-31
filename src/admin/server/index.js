@@ -29,7 +29,7 @@ admin.use(
 	})
 );
 
-admin.get('*', (req, res) => {
+admin.use('*', (req, res) => {
 	if(typeof req.session.passport === 'undefined') {
 		req.session.passport = {};
 	}

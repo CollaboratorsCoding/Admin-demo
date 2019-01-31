@@ -54,8 +54,7 @@ class Profile extends React.Component {
 
 	}
 
-	fetchUser(id) {
-
+	async fetchUser(id) {
 		// IF PROFILE SET STATE DATA TO CURRENT LOGGED IN USER
 		if(!id) {
 
@@ -67,29 +66,37 @@ class Profile extends React.Component {
 		}
 
 		// FETCH USER IF NOT PROFILE
-		this.setState({
+		await this.setState({
 			loading: true,
 		})
-		setTimeout(() => {
-			axios(`/admin/api/profile/${id}`)
-				.then(({data}) => {
-					this.setState({
-						isSelf: false,
-						error: false,
-						userProfile: data.userPageData,
-						loading: false,
-					})
-				})
-				.catch(() => {
-					this.setState({
+		
+		axios(`/api/profile/${id}`)
+			.then(({data}) => {
+				if(!data.userPageData) {
+					return this.setState({
 						userProfile: {},
 						loading: false,
 						error: true,
 						isSelf: false,
 					})
-
+				}
+				return this.setState({
+					isSelf: false,
+					error: false,
+					userProfile: data.userPageData,
+					loading: false,
 				})
-		}, 30)
+			})
+			.catch(() => {
+				this.setState({
+					userProfile: {},
+					loading: false,
+					error: true,
+					isSelf: false,
+				})
+
+			})
+		
 
 	}
 

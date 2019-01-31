@@ -222,7 +222,7 @@ class UserTable extends React.Component {
 
 	showConfirm = (id) => {
 		confirm({
-			title: 'Do you want to delete these user?',
+			title: 'Do you want to delete this user?',
 			onOk: () => {
 				this.onHandleRemove(id);
 			}
