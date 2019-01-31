@@ -170,7 +170,7 @@ class AuthNavigation extends React.Component {
 					<div className="noti__item">
 						<Badge count={userCount}>
 							<Icon
-								type="user"
+								type="team"
 								style={{ fontSize: '28px' }}
 								theme="outlined"
 							/>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form, Icon, Input, Button, Select } from 'antd';
+import { Form, Icon, Input, Button, Select, Alert } from 'antd';
 
 const { TextArea } = Input
 const FormItem = Form.Item;
@@ -23,10 +23,13 @@ class Message extends React.Component {
 		return (
 			
 			<div className="msg-form">
-				<p style={{
-					color: 'red', 
-					fontStyle: 'italic'
-				}}> Demo realtime sending message from client to admin!!!</p>
+			 <Alert
+					message="Info"
+					description="Demo realtime sending message from not logged in users to admins (for now all logged in users)."
+					type="info"
+					showIcon
+				/>
+				<br/>
 				<Form onSubmit={this.handleSubmit} className="login-form">
 					<FormItem>
 						{getFieldDecorator('email', {

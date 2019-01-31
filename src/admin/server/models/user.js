@@ -31,6 +31,7 @@ const UserSchema = new mongoose.Schema({
 	verificationToken: String,
 	resetPasswordToken: String,
 	resetPasswordExpires: Date,
+	date: { type: Date, default: Date.now() }
 });
 
 UserSchema.pre('save', function(next) {

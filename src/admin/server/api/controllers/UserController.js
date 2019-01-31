@@ -25,7 +25,7 @@ UserController.signup = (req, res, next) => {
 			templateVars: {
 				title: `Account verification!`,
 				name: user.name,
-				verifyUrl: `${req.protocol }://${req.host}/admin/api/verification?token=${
+				verifyUrl: `${req.protocol }://${req.host}/api/verification?token=${
 					user.verificationToken
 				}`,
 			},
@@ -362,7 +362,7 @@ UserController.getUsers = (req, res) => {
 	}
 	const offset = (page - 1) * count;
 	User.find()
-		.sort({ date: -1 })
+		.sort({ date: 1 })
 		.skip(parseFloat(offset))
 		.limit(parseFloat(count))
 		.exec((err, users) => {
