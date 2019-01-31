@@ -13,9 +13,9 @@ const MessageController = require('./controllers/MessageController');
 const checkJwt = require('../../../middlewares/checkJwt');
 
 cloudinary.config({
-	cloud_name: 'codenamevero',
-	api_key: process.env.API_KEY,
-	api_secret: process.env.API_SECRET,
+	cloud_name: process.env.CLOUDINARY_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 /* rest api */

@@ -1,11 +1,18 @@
 import React from 'react';
 import queryString from 'query-string';
 import axios from 'axios'
-import { Table, Pagination, Icon, Button, Input} from 'antd';
+import { Table, Tag, Pagination, Icon, Button, Input, Modal} from 'antd';
 import _ from 'lodash';
 import { EditableContext, EditableCell, EditableFormRow } from '../components/EditableCell';
 
+const confirm = Modal.confirm;
+
 const Search = Input.Search;
+
+const colors = {
+	admin: '#f50',
+	user: '#2db7f5',
+};
 class UserTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -35,6 +42,7 @@ class UserTable extends React.Component {
 			dataIndex: 'role',
 			width: 100,
 			editable: true,
+			render: role => <Tag color={colors[role]}>{role}</Tag>
 		},
 		{
 			title: 'operation',
@@ -51,7 +59,7 @@ class UserTable extends React.Component {
 							}}>
 								<Button onClick={() => this.edit(record.key)} type="primary" icon="edit" ghost>Edit</Button>
 								<Button
-									onClick={() => this.onHandleRemove(record.key) }
+									onClick={() => this.showConfirm(record.key) }
 									type="danger"
 									icon="delete"
 									ghost>Delete</Button>
@@ -122,6 +130,7 @@ class UserTable extends React.Component {
 			this.props.history.push({ pathname: '/userstable/', search: `?page=${page}`})
 		}
 	}
+	
 
 	onChangePage = async (current) => {
 		if(!this.props.users[current] && !_.get(this.state, 'filteredUsers[1].length', '')) {
@@ -200,7 +209,7 @@ class UserTable extends React.Component {
 	}
 
 	handleChange = ({ target: { value } }) => {
-		if (value.length > 2) {
+		if (value.length >= 2) {
 			this.startSearch(value);
 		} else {
 			this.setState({
@@ -211,8 +220,17 @@ class UserTable extends React.Component {
 		}
 	};
 
+	showConfirm = (id) => {
+		confirm({
+			title: 'Do you want to delete these user?',
+			onOk: () => {
+				this.onHandleRemove(id);
+			}
+		});
+	}
+
 	startSearch(query) {
-		if ([...query].length === 3) {
+		if (query.length === 2) {
 			return
 		}
 		axios(`/api/users/search?q=${query}`)

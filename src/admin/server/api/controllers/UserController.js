@@ -19,8 +19,8 @@ UserController.signup = (req, res, next) => {
 		}
 		sendEmail({
 			to: user.email,
-			from: '<codenamevero@gmail.com>',
-			subject: `[CodeNameVero] Verification email!`,
+			from: '<demo.app0121@gmail.com>',
+			subject: `[ADMIN-DEMO] Verification email!`,
 			template: 'verification',
 			templateVars: {
 				title: `Account verification!`,
@@ -241,8 +241,8 @@ UserController.sendresetPassword = (req, res) => {
 			}
 			sendEmail({
 				to: user.email,
-				from: '<codenamevero@gmail.com>',
-				subject: `[CodeNameVero] Password Restore!`,
+				from: '<demo.app0121@gmail.com>',
+				subject: `[ADMIN-DEMO] Password Restore!`,
 				template: 'reset-password',
 				templateVars: {
 					title: `Password Restore!`,

@@ -8,7 +8,7 @@ const confirm = Modal.confirm;
 
 function showConfirm(handleDeleteAvatar) {
 	confirm({
-		title: 'Ти дійсно хочеш видалити фото?',
+		title: 'Do you want to delete photo?',
 		onOk() {
 			handleDeleteAvatar();
 		}
@@ -28,7 +28,7 @@ const MyProfile = ({ random, user, handleEditUser, handleUploadAvatar, handleDel
 		<div className="image-wrapper">
 			{user.imageURL ? (
 				<Fragment>
-					<Icon onClick={() => showConfirm(handleDeleteAvatar)} className="delete-btn" type="close" theme="outlined" />
+					<Icon onClick={() => showConfirm(handleDeleteAvatar)} className="delete-btn" type="close-circle" theme="filled" />
 					<Avatar
 						style={{ border: '1px solid silver' }}
 						className="avatar"

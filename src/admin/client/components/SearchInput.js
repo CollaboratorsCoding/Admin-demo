@@ -19,7 +19,7 @@ class SearchInput extends React.Component {
 		this.setState({
 			value,
 		});
-		if (value.length > 2) {
+		if (value.length >= 2) {
 			this.startSearch(value);
 		} else {
 			this.setState({
@@ -29,7 +29,7 @@ class SearchInput extends React.Component {
 	}
 
 	startSearch(query) {
-		if ([...query].length === 3) {
+		if (query.length === 2) {
 			return
 		}
 		axios(`/api/search?q=${query}`)

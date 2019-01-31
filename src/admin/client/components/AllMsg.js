@@ -69,7 +69,7 @@ class AllMsg extends React.Component {
 		this.setState({
 			searchValue: value,
 		});
-		if (value.length > 2) {
+		if (value.length >= 2) {
 			this.startSearch(value);
 		} else {
 			this.setState({
@@ -80,7 +80,7 @@ class AllMsg extends React.Component {
 
 	// SEARCH HANDLER
 	startSearch(query) {
-		if ([...query].length === 3) {
+		if (query.length === 2) {
 			return
 		}
 		axios(`/api/messages/search?q=${query}`)

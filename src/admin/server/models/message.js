@@ -35,7 +35,7 @@ const MessageSchema = new mongoose.Schema({
 	},
 	tags: {
 		type: [String],
-		default: ['not_tagged', 'question'],
+		default: ['not_tagged',],
 	},
 });
 

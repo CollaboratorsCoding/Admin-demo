@@ -22,21 +22,22 @@
             
             margin-top: -65px;
             width: 102px;
+
             &:hover .delete-btn {
-                display: block;
+                opacity: 0.5;
+                
             }
             & .delete-btn {
                 position: absolute;
                 z-index: 5;
                 border-radius: 50%;
                 font-size: 30px;
-                background: #fff;
                 color: rgb(247, 93, 93);
                 padding: 6px;
                 left: 103px;
-                opacity: 0.5;
-                transition: opacity .3s;
-                display: none;
+                opacity: 0;
+                transition: opacity .4s;
+                
 
                 &:hover {
                     opacity: 1;

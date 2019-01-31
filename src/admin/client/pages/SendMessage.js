@@ -1,9 +1,11 @@
 import React from 'react';
 
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, Select } from 'antd';
 
 const { TextArea } = Input
 const FormItem = Form.Item;
+
+const Option = Select.Option;
 
 class Message extends React.Component {
 	handleSubmit = (e) => {
@@ -51,8 +53,20 @@ class Message extends React.Component {
 						{getFieldDecorator('title', {
 							rules: [{ required: true, message: 'Please input your title!' }],
 						})(
-							<Input prefix={<Icon type='pushpin' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Title" />
+							<Input prefix={<Icon type='paper-clip' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Title" />
 						)}
+					</FormItem>
+					<FormItem>
+						{getFieldDecorator('tags')(<Select
+							mode="multiple"
+							showArrow
+							placeholder="Enter tags"
+						>
+							<Option key="proposal">proposal</Option>
+							<Option key="question">question</Option>
+						</Select>)
+						
+						}
 					</FormItem>
 
 					<FormItem>

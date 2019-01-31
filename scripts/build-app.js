@@ -22,9 +22,9 @@ fse.copy("bin", "build/bin", (err) => {
 	console.log(chalk.green('✔ bin copied to build/bin'))
 });
 
-fse.copy(".env", "build/.env", (err) => {
+fse.copy(".env.production", "build/.env", (err) => {
 	if (err) return console.error(err);
-	console.log(chalk.green('✔ .env copied to build/.env'))
+	console.log(chalk.green('✔ .env.production copied to build/.env'))
 });
 
 

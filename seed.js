@@ -7,7 +7,7 @@ if(!process.argv[2]) {
 	return console.log(chalk.red("Please input how many users create in database!!!"))
 }
 
-mongoose.connect('mongodb://localhost:27017/codenamevero', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/demoapp', { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 
 mongoose.connection.on('connected', () => {

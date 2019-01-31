@@ -21,12 +21,12 @@ const templateToHTML = require('./hbs-email-to-html');
 
 */
 const transporter = nodeMailer.createTransport({
-	host: 'smtp.gmail.com',
+	host: process.env.EMAIL_HOST,
 	port: 465,
 	secure: true,
 	auth: {
-		user: 'codenamevero@gmail.com',
-		pass: 'roflanEbalo228#',
+		user: process.env.EMAIL_USER,
+		pass: process.env.EMAIL_PASS,
 	},
 });
 // TODO: Nodemail will  be here
