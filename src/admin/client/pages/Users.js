@@ -4,11 +4,24 @@ import axios from 'axios';
 import { Table, Tag, Pagination, Icon, Button, Input, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import {
 	EditableContext,
 	EditableCell,
 	EditableFormRow,
 } from '../components/EditableCell';
+
+import TableUsersActions from '../store/usersTable/action';
+
+
+const {
+	removeUsers,
+	changePage,
+	editUsers,
+	getUsers,
+} = TableUsersActions;
 
 const confirm = Modal.confirm;
 
@@ -358,6 +371,7 @@ class UserTable extends React.Component {
 	}
 
 	render() {
+		console.log(this.props)
 		const { users, counts } = this.props;
 		const antIcon = <Icon type="sync" style={{ fontSize: 27 }} spin />;
 		const components = {
@@ -440,4 +454,24 @@ class UserTable extends React.Component {
 	}
 }
 
-export default UserTable;
+
+const mapStateToProps = state => ({ ...state.usersTable});
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators(
+		{
+			handleGetUsers: getUsers,
+			handleRemoveUsers: removeUsers,
+			handleChangePage: changePage,
+			handleEditUsers: editUsers,
+		
+		},
+		dispatch
+	);
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(UserTable)
+
+

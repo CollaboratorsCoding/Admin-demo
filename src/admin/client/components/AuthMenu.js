@@ -6,9 +6,16 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import { Icon, Avatar, Dropdown, Tag, Badge } from 'antd';
+// Actions
+import UserActions from '../store/user/action';
 import MessageActions from '../store/msg/action';
 
 import AllMsg from './AllMsg';
+
+const {
+	getCount,
+	subscribeUserCounter
+} = UserActions;
 
 const {
 	getMessages,
@@ -17,12 +24,13 @@ const {
 } = MessageActions;
 
 
-class AuthNavigation extends React.Component {
+class AuthMenu extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			visibleModal: false,
 		};
+		this.props.subscribeUserCounter();
 		this.showModal = this.showModal.bind(this);
 		this.handleCancelModal = this.handleCancelModal.bind(this);
 		
@@ -200,7 +208,10 @@ class AuthNavigation extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({ ...state.msg });
+const mapStateToProps = state => ({ 
+	userCount: state.user.userCount,
+	...state.msg 
+});
 
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
@@ -209,6 +220,8 @@ const mapDispatchToProps = dispatch =>
 			handleGetMessages: getMessages,
 			subscribeMessages,
 			handleReadChange,
+			subscribeUserCounter,
+			getCount,
 		},
 		dispatch
 	);
@@ -217,5 +230,5 @@ export default withRouter(
 	connect(
 		mapStateToProps,
 		mapDispatchToProps
-	)(AuthNavigation)
+	)(AuthMenu)
 );

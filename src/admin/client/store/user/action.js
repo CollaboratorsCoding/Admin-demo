@@ -29,26 +29,6 @@ UserActions.getCount = () =>
 		}
 	)
 
-UserActions.changePage = (page) => dispatch => {
-	dispatch({
-		type: types.CHANGE_PAGE,
-		page
-	});
-}
-UserActions.getUsers = createActionThunk(
-	types.GET_USERS,
-	(page, limit) => axios.get(`/api/users?q=${limit}&p=${page}`)
-);
-
-UserActions.editUsers = createActionThunk(
-	types.EDIT_USERS,
-	(data, key, page) => axios.put(`/api/users?key=${key}&p=${page}`, data)
-);
-
-UserActions.removeUsers = createActionThunk(
-	types.REMOVE_USERS,
-	(key, page) => axios.delete(`/api/users?key=${key}&p=${page}`)
-);
 
 UserActions.getUser = createActionThunk(types.GET_USER, () =>
 	axios.get(`/api/profile`)

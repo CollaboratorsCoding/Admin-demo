@@ -1,7 +1,8 @@
 import React from 'react';
-import { Row, Col , Icon} from 'antd';
+import { connect } from 'react-redux';
+import { Row, Col, Icon} from 'antd';
 
-const HomePage = ({userCount, counts}) => (
+const HomePage = ({userCount, registeredUserCount}) => (
 	<>
 		<Row>
 			<Col span={24}>
@@ -17,7 +18,7 @@ const HomePage = ({userCount, counts}) => (
 							<Icon type="idcard" />
 						</div>
 						<div className="text">
-							<h2>{counts}</h2>
+							<h2>{registeredUserCount}</h2>
 							<span>Registered users</span>
 						</div>
 					</div>
@@ -42,4 +43,14 @@ const HomePage = ({userCount, counts}) => (
 	</>
 );
 
-export default HomePage;
+
+
+
+
+export default connect(
+	state => ({ 
+		userCount: state.user.userCount,
+		registeredUserCount: state.user.counts,
+	})
+)(HomePage)
+

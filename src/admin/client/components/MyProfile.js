@@ -15,12 +15,12 @@ function showConfirm(handleDeleteAvatar) {
 	});
 }
 
-const MyProfile = ({ random, user, handleEditUser, handleUploadAvatar, handleDeleteAvatar }) => (
+const MyProfile = ({user, handleEditUser, handleUploadAvatar, handleDeleteAvatar }) => (
 	<div className="img-user-profile">
 		<div
 			className="profile-bgHome"
 			style={{
-				backgroundImage: `url(https://source.unsplash.com/collection/466697/${random})`,
+				backgroundImage: `url(https://source.unsplash.com/collection/466697/333)`,
 				backgroundPosition: '50% 50%',
 				backgroundRepeat: 'no-repeat',
 			}}

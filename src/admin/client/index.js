@@ -8,7 +8,7 @@ import SocketClient from './store/SocketClient';
 
 import './styles/main.scss';
 
-import App from './layouts/App';
+import App from './layout/App';
 
 const socketClient = new SocketClient();
 socketClient.connect();
@@ -28,8 +28,8 @@ function render(Component) {
 render(App);
 
 if (module.hot) {
-	module.hot.accept('./layouts/App.js', () => {
-		const NewAppRoot = require('./layouts/App.js').default;
+	module.hot.accept('./layout/App.js', () => {
+		const NewAppRoot = require('./layout/App.js').default;
 		render(NewAppRoot);
 	});
 }

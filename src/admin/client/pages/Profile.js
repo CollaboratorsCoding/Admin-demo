@@ -6,7 +6,6 @@ import MyProfile from '../components/MyProfile';
 import UserProfile from '../components/UserProfile';
 import Loader from '../components/Loader';
 
-const getRandomNum = () => (Math.floor(Math.random() * 206));
 class Profile extends React.Component {
 	constructor(props) {
 		super(props);
@@ -110,9 +109,9 @@ class Profile extends React.Component {
 			<div className="profile-user-page card">
 				{
 					isSelf ?
-						<MyProfile loading={this.props.loading} handleEditUser={this.props.handleEditUser} handleDeleteAvatar={this.props.handleDeleteAvatar} handleUploadAvatar={this.props.handleUploadAvatar} random={getRandomNum()} user={userProfile} />
+						<MyProfile loading={this.props.loading} handleEditUser={this.props.handleEditUser} handleDeleteAvatar={this.props.handleDeleteAvatar} handleUploadAvatar={this.props.handleUploadAvatar} user={userProfile} />
 						:
-						<UserProfile random={getRandomNum()} user={userProfile} />
+						<UserProfile user={userProfile} />
 				}
 			</div>
 		)
