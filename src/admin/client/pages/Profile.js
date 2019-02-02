@@ -20,6 +20,8 @@ class Profile extends React.Component {
 	componentDidMount() {
 		const paramsId = _.get(this.props, 'match.params.id', null);
 		this.fetchUser(paramsId)
+		
+		
 	}
 
 	componentWillReceiveProps = (nextProps) => {
@@ -55,7 +57,8 @@ class Profile extends React.Component {
 
 	async fetchUser(id) {
 		// IF PROFILE SET STATE DATA TO CURRENT LOGGED IN USER
-		if(!id) {
+		const paramsId = _.get(this.props, 'match.params.id', null);
+		if(!id || paramsId === this.props.user._id) {
 
 			this.setState({
 				isSelf: true,

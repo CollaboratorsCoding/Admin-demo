@@ -371,7 +371,6 @@ class UserTable extends React.Component {
 	}
 
 	render() {
-		console.log(this.props)
 		const { users, counts } = this.props;
 		const antIcon = <Icon type="sync" style={{ fontSize: 27 }} spin />;
 		const components = {

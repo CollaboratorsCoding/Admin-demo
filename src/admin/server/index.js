@@ -30,8 +30,8 @@ admin.use(
 );
 
 admin.use('*', (req, res) => {
-	if(typeof req.session.passport === 'undefined') {
-		req.session.passport = {};
+	if(typeof req.session.user_id === 'undefined') {
+		req.session.user_id = null;
 	}
 	res.sendFile(`${__dirname}/dist/index.html`);
 });

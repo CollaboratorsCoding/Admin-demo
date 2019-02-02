@@ -13,7 +13,15 @@ const UserTypes = require('../../models/user.types');
 const UserController = {};
 
 UserController.signup = (req, res, next) => {
-	passport.authenticate('local.signup', (error, user) => {
+	const SignUpform = { ...req.body };
+	const errors = validate(SignUpform, UserTypes.SignUpForm);
+
+	if (errors.error) {
+		return res.json(
+			{ type: 'server', message: errors.error, status: 401 },
+		);
+	}
+	return passport.authenticate('local.signup', (error, user) => {
 		if (error) {
 			return res.status(error.status).json(error);
 		}
@@ -25,71 +33,72 @@ UserController.signup = (req, res, next) => {
 			templateVars: {
 				title: `Account verification!`,
 				name: user.name,
-				verifyUrl: `${req.protocol }://${req.host}/api/verification?token=${
+				verifyUrl: `${req.protocol}://${req.host}/api/verification?token=${
 					user.verificationToken
 				}`,
 			},
 		});
-		return req.login(user, loginErr => {
-			if (loginErr) return next(loginErr);
-			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-			req.session.token = token;
-			// req.session.adminData = {
-			// 	name: user.name
-			// }
-			return res.json({
-				isLoggedIn: req.isAuthenticated(),
-				user: _.omit(user.toObject(), [
-					'password',
-					'verificationToken',
-					'resetPasswordToken',
-					'resetPasswordExpires',
-				]),
-			});
+		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+		req.session.token = token;
+		req.session.user_id = user._id;
+		return res.json({
+			isLoggedIn: true,
+			user: _.omit(user.toObject(), [
+				'password',
+				'verificationToken',
+				'resetPasswordToken',
+				'resetPasswordExpires',
+			]),
 		});
+		
 	})(req, res, next);
 };
 
 UserController.signin = (req, res, next) => {
-	passport.authenticate('local.signin', (error, user) => {
+	const SignInform = { ...req.body };
+	const errors = validate(SignInform, UserTypes.SignInForm);
+	if (errors.error) {
+		return res.json(
+			{
+				type: 'server',
+				message: errors.error,
+				status: 401,
+			}
+		);
+	}
+	return passport.authenticate('local.signin', async (error, user) => {
 		if (error) {
 			return res.status(error.status).json(error);
 		}
-		return req.login(user, async loginErr => {
-			if (loginErr) return next(loginErr);
-			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-			const counts = await User.count();
-			req.session.token = token;
-			req.session.adminData = {
-				name: user.name
+		
+		const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+		const counts = await User.count();
+		req.session.token = token;
+		req.session.user_id = user._id;
+		return Image.findOne(
+			{ parentCollection: 'users', parentId: user._id },
+			'publicURL',
+			(err, image) => {
+				const userObject = user.toObject();
+				userObject.imageURL = _.get(image, 'publicURL', undefined);
+				return res.json({
+					isLoggedIn: true,
+					counts,
+					user: _.omit(userObject, [
+						'password',
+						'verificationToken',
+						'resetPasswordToken',
+						'resetPasswordExpires',
+					])
+				});
 			}
-			return Image.findOne(
-				{ parentCollection: 'users', parentId: user._id },
-				'publicURL',
-				(err, image) => {
-					const userObject = user.toObject();
-					userObject.imageURL = _.get(image, 'publicURL', undefined);
-					return res.json({
-						isLoggedIn: req.isAuthenticated(),
-						counts,
-						user: _.omit(userObject, [
-							'password',
-							'verificationToken',
-							'resetPasswordToken',
-							'resetPasswordExpires',
-						])
-					});
-				}
-			)
-		})
-
+		)
 	})(req, res, next);
 };
 
 UserController.logout = (req, res) => {
-	req.logout();
 	req.session.token = null;
-	req.session.adminData = null;
+	req.session.user_id = null;
 	res.json({
 		requestSuccess: {
 			message: 'You are Logged Out now',
@@ -362,7 +371,7 @@ UserController.getUsers = (req, res) => {
 	}
 	const offset = (page - 1) * count;
 	User.find()
-		.sort({ date: 1 })
+		.sort({ date: -1 })
 		.skip(parseFloat(offset))
 		.limit(parseFloat(count))
 		.exec((err, users) => {

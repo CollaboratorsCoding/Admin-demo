@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 // Components
 import Menu from './Menu';
@@ -6,7 +7,14 @@ import Sidebar from './Sidebar';
 
 class Navigation extends Component {
     state = {
-    	collapsed: false
+    	collapsed: window.innerWidth<992
+    }
+	
+    componentDidUpdate(prevProps) {
+    	const { location } = this.props;
+    	if (prevProps.location.pathname !== location.pathname && this.state.breakpoint) {
+    		this.setState({ collapsed: true })
+    	}
     }
 
     openSidebar = () => {
@@ -23,6 +31,7 @@ class Navigation extends Component {
 	
 	breakpointSidebar = broken => {
 		this.setState({
+			breakpoint: broken,
 			collapsed: broken,
 		})
 	}
@@ -50,4 +59,4 @@ class Navigation extends Component {
 
 
 
-export default Navigation
+export default withRouter(Navigation)
