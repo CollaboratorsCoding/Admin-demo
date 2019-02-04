@@ -6,7 +6,6 @@ import MyProfile from '../components/MyProfile';
 import UserProfile from '../components/UserProfile';
 import Loader from '../components/Loader';
 
-const getRandomNum = () => (Math.floor(Math.random() * 206));
 class Profile extends React.Component {
 	constructor(props) {
 		super(props);
@@ -21,6 +20,8 @@ class Profile extends React.Component {
 	componentDidMount() {
 		const paramsId = _.get(this.props, 'match.params.id', null);
 		this.fetchUser(paramsId)
+		
+		
 	}
 
 	componentWillReceiveProps = (nextProps) => {
@@ -56,7 +57,8 @@ class Profile extends React.Component {
 
 	async fetchUser(id) {
 		// IF PROFILE SET STATE DATA TO CURRENT LOGGED IN USER
-		if(!id) {
+		const paramsId = _.get(this.props, 'match.params.id', null);
+		if(!id || paramsId === this.props.user._id) {
 
 			this.setState({
 				isSelf: true,
@@ -110,9 +112,9 @@ class Profile extends React.Component {
 			<div className="profile-user-page card">
 				{
 					isSelf ?
-						<MyProfile loading={this.props.loading} handleEditUser={this.props.handleEditUser} handleDeleteAvatar={this.props.handleDeleteAvatar} handleUploadAvatar={this.props.handleUploadAvatar} random={getRandomNum()} user={userProfile} />
+						<MyProfile loading={this.props.loading} handleEditUser={this.props.handleEditUser} handleDeleteAvatar={this.props.handleDeleteAvatar} handleUploadAvatar={this.props.handleUploadAvatar} user={userProfile} />
 						:
-						<UserProfile random={getRandomNum()} user={userProfile} />
+						<UserProfile user={userProfile} />
 				}
 			</div>
 		)

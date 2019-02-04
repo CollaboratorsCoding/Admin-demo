@@ -1,10 +1,10 @@
 import React from 'react';
 import { Avatar } from 'antd';
 
-const UserProfile = ({random, user}) => (
+const UserProfile = ({user}) => (
 	<div className="img-user-profile">
 		<div className="profile-bgHome" style={{
-			backgroundImage: `url(https://source.unsplash.com/collection/466697/${random})`,
+			backgroundImage: `url(https://source.unsplash.com/collection/466697/333)`,
 			backgroundPosition: "50% 50%"
 		}} />
 		<div className="image-wrapper">

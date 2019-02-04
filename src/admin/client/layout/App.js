@@ -10,7 +10,6 @@ import { Modal, notification } from 'antd';
 
 // Components
 import Navigation from '../components/Navigation';
-import Sidebar from '../components/Sidebar';
 
 // HOC's
 import Authenticated from '../../../hocs/Authenticated';
@@ -41,14 +40,8 @@ const {
 	sendResetLinkEmail,
 	changePasswordRestore,
 	editUser,
-	removeUsers,
-	changePage,
-	editUsers,
 	uploadAvatar,
 	deleteAvatar,
-	getUsers,
-	getCount,
-	subscribeUserCounter
 } = UserActions;
 
 const { sendMessage } = MessageActions
@@ -57,7 +50,6 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { afterLoginPath: null, };
-		this.props.subscribeUserCounter();
 		// this.setAfterLoginPath = this.setAfterLoginPath.bind(this);
 	}
 
@@ -104,35 +96,15 @@ class App extends React.Component {
 		}
 	}
 
-	openSidebar = () => {
-		this.setState({
-		  collapsed: false,
-		})
-	}
-	
-	closeSidebar = () => {
-		this.setState({
-		  collapsed: true,
-		})
-	}
-	
-	breakpointSidebar = broken => {
-		this.setState({
-			breakpoint: broken,
-			collapsed: broken,
-		  })
-	}
-
 	// setAfterLoginPath(afterLoginPath) {
 	// 	this.setState({ afterLoginPath });
 	// }
 
 	render() {
 		const { props, state } = this;
-		const { checkedAuth, user, isLoggedIn, userCount } = this.props;
+		const { checkedAuth, user, isLoggedIn } = this.props;
 		if (props.loadingUserState) return null;
 		let activationModal = null;
-
 		// MODAL ACTIVATION
 		if (checkedAuth && isLoggedIn && !user.isVerified) {
 			activationModal = (
@@ -155,21 +127,10 @@ class App extends React.Component {
 
 		return (
 			<div className="page-wrapper">
-				<Sidebar
-					collapsed={this.state.collapsed}
-					isLoggedIn={this.props.isLoggedIn}
-					closeSidebar={this.closeSidebar}
-					breakpointSidebar={this.breakpointSidebar}
-
-				/>
 				<div className="page-container">
 					<Navigation
 						isLoggedIn={props.isLoggedIn}
-						getCount={this.props.getCount}
 						user={props.user}
-						userCount={userCount}
-						openSidebar={this.openSidebar}
-						collapsed={this.state.collapsed}
 					/>
 					{activationModal}
 					<div className="main-content">
@@ -260,25 +221,29 @@ App.propTypes = {
 	isLoggedIn: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({ ...state.user });
+const mapStateToProps = state => ({ 
+	user: state.user.user,
+	loading: state.user.loading,
+	handleGetUser: state.user.handleGetUser,
+	checkedAuth: state.user.checkedAuth,
+	requestSuccess: state.user.requestSuccess,
+	error: state.user.error,
+	isLoggedIn: state.user.isLoggedIn,
+	loadingUserState: state.user.loadingUserState,
+});
 
 const mapDispatchToProps = dispatch =>
 	bindActionCreators(
 		{
 			// USER ACTIONS
 			handleGetUser: getUser,
-			handleGetUsers: getUsers,
-			handleRemoveUsers: removeUsers,
-			handleChangePage: changePage,
 			hendleSendMessage: sendMessage,
 			handleCreateUser: createUser,
 			handleLoginUser: loginUser,
 			handleLogOutUser: logoutUser,
 			handleEditUser: editUser,
-			handleEditUsers: editUsers,
 			sendResetLinkEmail,
-			subscribeUserCounter,
-			getCount,
+			
 			changePasswordRestore,
 			handleUploadAvatar: uploadAvatar,
 			handleDeleteAvatar: deleteAvatar,

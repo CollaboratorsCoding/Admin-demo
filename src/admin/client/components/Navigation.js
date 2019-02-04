@@ -1,46 +1,62 @@
-import React from 'react';
-import { Icon } from 'antd';
-import PublicNavigation from './PublicNavigation';
-import AuthNavigation from './AuthNavigation';
-import SearchInput from './SearchInput';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-const Navigation = ({
-	user,
-	isLoggedIn,
-	handleGetMessages,
-	subscribeMessages,
-	userCount,
-	getCount,
-	openSidebar
-}) => (
-	<header className="header-desktop">
-		<div className="section__content section__content--p30">
-			<div className="header-wrap">
-				<Icon
-					className="trigger"
-					type='menu-unfold'
-					onClick={openSidebar}
+// Components
+import Menu from './Menu';
+import Sidebar from './Sidebar';
+
+class Navigation extends Component {
+    state = {
+    	collapsed: window.innerWidth<992
+    }
+	
+    componentDidUpdate(prevProps) {
+    	const { location } = this.props;
+    	if (prevProps.location.pathname !== location.pathname && this.state.breakpoint) {
+    		this.setState({ collapsed: true })
+    	}
+    }
+
+    openSidebar = () => {
+    	this.setState({
+		    collapsed: false,
+    	})
+    }
+	
+	closeSidebar = () => {
+		this.setState({
+		    collapsed: true,
+		})
+	}
+	
+	breakpointSidebar = broken => {
+		this.setState({
+			breakpoint: broken,
+			collapsed: broken,
+		})
+	}
+
+	render() {
+    	return (
+            <>
+				<Sidebar
+            	collapsed={this.state.collapsed}
+            	isLoggedIn={this.props.isLoggedIn}
+            	closeSidebar={this.closeSidebar}
+            	breakpointSidebar={this.breakpointSidebar}
+
 				/>
-				{isLoggedIn ? (<SearchInput />) : null}
-				<div className="header-button">
-				
-					<div className="right-menu">
-						{isLoggedIn ? (
-							<AuthNavigation
-								user={user}
-								getCount={getCount}
-								userCount={userCount}
-								handleGetMessages={handleGetMessages}
-								subscribeMessages={subscribeMessages}
-							/>
-						) : (
-							<PublicNavigation />
-						)}
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-);
+				<Menu
+					isLoggedIn={this.props.isLoggedIn}
+					user={this.props.user}
+					openSidebar={this.openSidebar}
+					collapsed={this.state.collapsed}
+				/>
+            </>
+    	)
+	}
+}
 
-export default Navigation;
+
+
+export default withRouter(Navigation)
