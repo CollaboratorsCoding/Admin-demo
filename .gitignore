@@ -8,6 +8,7 @@
 /build
 /src/admin/server/dist
 /src/landing/server/dist
+./landing-admin
 
 # upload
 /uploads

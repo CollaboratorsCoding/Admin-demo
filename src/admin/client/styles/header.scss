@@ -17,7 +17,6 @@
 	width: 77%;
 }
 
-
 .au-btn--submit {
 	position: relative;
 	right: 0;
@@ -61,7 +60,7 @@
 	top: 0;
 	right: 0;
 	left: 300px;
-	transition: all .2s;
+	transition: all 0.2s;
 	height: 75px;
 	z-index: 3;
 }
@@ -79,7 +78,6 @@
 	transform: translateY(-50%);
 }
 
-
 @media (max-width: 992px) {
 	.header-desktop {
 		position: relative;
@@ -93,8 +91,6 @@
 		height: 130px;
 	}
 }
-
-
 
 .header-desktop .mess-dropdown {
 	top: 51px;
@@ -142,7 +138,8 @@
 	}
 	.header-wrap {
 		flex-wrap: wrap;
-		i, .header-button {
+		i,
+		.header-button {
 			order: 2;
 		}
 
@@ -169,10 +166,6 @@
 		left: 79px;
 	}
 }
-
-
-
-
 
 .header-button {
 	display: -webkit-box;
@@ -582,8 +575,14 @@ $emailListBG: #fff;
 	text-align: center;
 }
 
-.ant-modal { 
+.ant-modal {
 	top: 10%;
+
+	@media (max-width: 767px) {
+		top: 40px;
+		width: 100% !important;
+		margin: 0;
+	}
 }
 
 .modal-body {
@@ -703,11 +702,10 @@ $emailListBG: #fff;
 		line-height: 64px;
 		padding: 0 24px;
 		cursor: pointer;
-		transition: color .3s;
+		transition: color 0.3s;
 	}
 	.right-menu {
 		width: 200px;
 		margin-left: auto;
 	}
 }
-
