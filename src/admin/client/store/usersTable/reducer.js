@@ -74,7 +74,6 @@ function UsersTableReducer(
 			users: {
 				...state.users,  [action.payload.data.page]: EditUsersPage
 			},
-			user: action.payload.data.currentUser ? action.payload.data.currentUser : state.user,
 			error: {},
 		};
 	}	
