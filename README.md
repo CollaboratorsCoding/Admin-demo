@@ -5,7 +5,7 @@ Live Demo - https://landing-admin.herokuapp.com
 <img src="README-FILES/admin.png"/>
 </p>
 
-If you want run this app on your computer, first you must add variables to file `.env`. 
+If you want run this app on your pc, first you must add variables to file `.env`. 
 
 ### For Cloudinary settings:
 ```bash
@@ -48,16 +48,16 @@ Open http://localhost:3000 to view it in the browser.
 
 ## FEATURES
 
-- Authentication user and verification email.
+- User authentication and email verification.
 ![](README-FILES/signup.gif)
 
-- Editing profile.
+- Profile edit.
 ![](README-FILES/profile.gif)
 
 - Global search.
 ![](README-FILES/search.gif)
 
-- Realtime messages sending with socket.io
+- Sending realtime messages with socket.io
 ![](README-FILES/message.gif)
 
 - User data management.
