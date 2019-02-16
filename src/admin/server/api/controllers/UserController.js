@@ -100,6 +100,7 @@ UserController.logout = (req, res) => {
 	req.session.token = null;
 	req.session.user_id = null;
 	res.json({
+		isLoggedIn: false,
 		requestSuccess: {
 			message: 'You are Logged Out now',
 			operation: 'user_logout',

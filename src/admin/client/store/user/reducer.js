@@ -4,7 +4,6 @@ import types from './types';
 function UserReducer(
 	state = {
 		checkedAuth: false,
-		isLoggedIn: false,
 		user: {},
 		users: {},
 		loadingUserState: true,
@@ -33,32 +32,13 @@ function UserReducer(
 			counts: action.payload.data.counts,
 			loadingUserState: false,
 			checkedAuth: true,
-			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
 			error: {},
 		};
 	case `${types.GET_USER}_FAILED`:
 		return {
 			...state,
-			error: {
-				type: _.get(action.payload, 'response.data.type', 'server'),
-				message: _.get(
-					action.payload,
-					'response.data.message',
-					'Oops... Something went wrong 😔'
-				),
-				formData: _.get(
-					action.payload,
-					'response.data.formData',
-					{}
-				),
-			},
 			loadingUserState: false,
 			checkedAuth: true,
-			isLoggedIn: _.get(
-				action.payload,
-				'response.data.isLoggedIn',
-				false
-			),
 		};
 	
 	case `${types.CREATE_USER}_START`:
@@ -73,7 +53,6 @@ function UserReducer(
 			user: _.get(action.payload, 'data.user', {}),
 			counts: action.payload.data.counts,
 			loading: false,
-			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
 			error: {},
 		};
 	case `${types.CREATE_USER}_FAILED`:
@@ -130,11 +109,6 @@ function UserReducer(
 					{}
 				),
 			},
-			isLoggedIn: _.get(
-				action.payload,
-				'response.data.isLoggedIn',
-				false
-			),
 			loading: false,
 		};
 	case `${types.LOGIN_USER}_START`:
@@ -148,7 +122,6 @@ function UserReducer(
 			...state,
 			user: _.get(action.payload, 'data.user', {}),
 			counts: action.payload.data.counts,
-			isLoggedIn: _.get(action.payload, 'data.isLoggedIn', true),
 			loading: false,
 			error: {},
 		};
@@ -184,7 +157,6 @@ function UserReducer(
 			error: {},
 			loading: false,
 			checkedAuth: true,
-			isLoggedIn: false,
 			requestSuccess: _.get(action.payload, 'data.requestSuccess', {
 				operation: 'generic',
 				message: 'Success. Operation Completed',
@@ -195,11 +167,6 @@ function UserReducer(
 			...state,
 			loading: false,
 			requestSuccess: {},
-			isLoggedIn: _.get(
-				action.payload,
-				'response.data.isLoggedIn',
-				false
-			),
 			error: {
 				type: _.get(action.payload, 'response.data.type', 'server'),
 				message: _.get(

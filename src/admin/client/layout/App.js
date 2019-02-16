@@ -228,7 +228,7 @@ const mapStateToProps = state => ({
 	checkedAuth: state.user.checkedAuth,
 	requestSuccess: state.user.requestSuccess,
 	error: state.user.error,
-	isLoggedIn: state.user.isLoggedIn,
+	isLoggedIn: state.auth.isLoggedIn,
 	loadingUserState: state.user.loadingUserState,
 });
 

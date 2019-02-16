@@ -24,8 +24,8 @@ cloudinary.config({
 
 api.get('/profile', checkJwt, UserController.getprofile);
 api.get('/users', checkJwt, UserController.getUsers);
-api.get('/users/search', UserController.handleSearch);
-api.delete('/users', UserController.handleRemove);
+api.get('/users/search', checkJwt, UserController.handleSearch);
+api.delete('/users', checkJwt, UserController.handleRemove);
 api.put('/users', checkJwt, UserController.editUsers);
 api.put('/profile', checkJwt, UserController.editProfile);
 api.get('/profile/:id', checkJwt, UserController.getuserprofile);
@@ -45,7 +45,7 @@ api.get('/logout', UserController.logout);
 
 // SEARCH API
 
-api.get('/search', SearchController.handleSearch);
+api.get('/search', checkJwt, SearchController.handleSearch);
 
 // IMAGES API
 

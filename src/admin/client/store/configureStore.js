@@ -1,13 +1,14 @@
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './rootReducer';
-import socketMiddleware from './socketMiddleware';
+import socketMiddleware from './middlewares/socketMiddleware';
+import authMiddleware from './middlewares/authMiddleware';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 
 const configureStore = (initialState, socketClient) => {
-	const middleware = [socketMiddleware(socketClient), thunk];
+	const middleware = [socketMiddleware(socketClient), authMiddleware, thunk];
 	let enhancer;
 	if (!isProd) {
 		const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({

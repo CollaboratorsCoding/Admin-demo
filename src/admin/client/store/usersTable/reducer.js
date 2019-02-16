@@ -5,6 +5,7 @@ function UsersTableReducer(
 	state = {
 		users: {},
 		error: {},
+		page: 1,
 		counts: null,
 		loading: false,
 	},
@@ -24,16 +25,16 @@ function UsersTableReducer(
 			error: {},
 		};
 	case `${types.GET_USERS}_COMPLETED`: {
+		const page = Number(action.payload.data.page)
 		const newUsers = {
-			...state.users,  [action.payload.data.page]: action.payload.data.users
+			...state.users,  [page]: action.payload.data.users
 		}
-
 		return {
 			...state,
 			loading: false,
 			users: newUsers,
 			counts: action.payload.data.counts,
-			page: action.payload.data.page,
+			page,
 			error: {},
 		};
 	}	
@@ -62,20 +63,28 @@ function UsersTableReducer(
 			error: {},
 		};
 	case `${types.EDIT_USERS}_COMPLETED`: {
-		// console.log(action.payload.user)
-		const newData = [...state.users[action.payload.data.page]];
-		const EditUsersPage = newData.map((user) => {
-			if(user.key === action.payload.data.user.key) return action.payload.data.user
-			return user
-		})
+		if (state.users[action.payload.data.page]) {
+			const newData = [...state.users[action.payload.data.page]];
+			const EditUsersPage = newData.map((user) => {
+				if(user.key === action.payload.data.user.key) return action.payload.data.user
+				return user
+			})
+			return {
+				...state,
+				loading: false,
+				users: {
+					...state.users,
+					[action.payload.data.page]: EditUsersPage
+				},
+				error: {},
+			}
+		}
+			
 		return {
 			...state,
-			loading: false,
-			users: {
-				...state.users,  [action.payload.data.page]: EditUsersPage
-			},
-			error: {},
-		};
+			loading: false
+		}
+		
 	}	
 	case `${types.EDIT_USERS}_FAILED`:
 		return {

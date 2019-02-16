@@ -173,9 +173,10 @@ class UserTable extends React.Component {
 	}
 
 	async componentDidUpdate() {
+		
 		const queryPage = Math.ceil(
 			Number(queryString.parse(this.props.location.search).page)
-		);
+		);	
 		let count = this.props.counts;
 		if (_.get(this.state, 'filteredUsers[1].length', '')) {
 			count = this.state.filteredCount;
@@ -199,7 +200,8 @@ class UserTable extends React.Component {
 		}
 		const maxPage = Math.ceil(count / 10);
 		const page = maxPage === 0 ? 1 : maxPage;
-		if (queryPage > page) {
+	
+		if (queryPage > page && !this.props.loading) {
 			this.props.history.push({
 				pathname: '/userstable/',
 				search: `?page=${page}`,
@@ -346,7 +348,6 @@ class UserTable extends React.Component {
 						: { 1: ['Not found'] },
 					filteredCount: data.users.length || 0,
 				});
-
 				this.props.history.push({
 					pathname: '/userstable/',
 					search: `?page=1`,
