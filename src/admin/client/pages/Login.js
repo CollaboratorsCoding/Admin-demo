@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button, Alert } from 'antd';
 import React from 'react';
 import _ from 'lodash';
 
@@ -113,73 +113,87 @@ class Login extends React.Component {
 			);
 		}
 		return (
-			<Form onSubmit={this.handleSubmit} className="center-form">
-				<FormItem>
-					{getFieldDecorator('email', {
-						rules: [
-							{
-								validator: (rule, value, cb) =>
-									validateField(
-										UserTypes.SignInForm.email,
-										value,
-										cb
-									),
-							},
-						],
-					})(
-						<Input
-							prefix={
-								<Icon
-									type="mail"
-									style={{ color: 'rgba(0,0,0,.25)' }}
-								/>
-							}
-							placeholder="email"
-							className="basic-input"
-						/>
-					)}
-				</FormItem>
-				<FormItem>
-					{getFieldDecorator('password', {
-						rules: [
-							{
-								validator: (rule, value, cb) =>
-									validateField(
-										UserTypes.SignInForm.password,
-										value,
-										cb
-									),
-							},
-						],
-					})(
-						<Input
-							prefix={
-								<Icon
-									type="lock"
-									style={{ color: 'rgba(0,0,0,.25)' }}
-								/>
-							}
-							type="password"
-							placeholder="Password"
-							className="basic-input"
-						/>
-					)}
-				</FormItem>
-				<FormItem>
-					<span className="text-click" onClick={this.handleForgot}>
+			<div>
+				<div style={{
+					'maxWidth': 400,
+					'margin': 'auto'
+				}}>
+					<Alert
+						message="Login"
+						description="Email: admin@demo.com, Password: 12345678"
+						type="info"
+						showIcon
+					/>
+				</div>
+			
+				<Form onSubmit={this.handleSubmit} className="center-form">
+					<FormItem>
+						{getFieldDecorator('email', {
+							rules: [
+								{
+									validator: (rule, value, cb) =>
+										validateField(
+											UserTypes.SignInForm.email,
+											value,
+											cb
+										),
+								},
+							],
+						})(
+							<Input
+								prefix={
+									<Icon
+										type="mail"
+										style={{ color: 'rgba(0,0,0,.25)' }}
+									/>
+								}
+								placeholder="email"
+								className="basic-input"
+							/>
+						)}
+					</FormItem>
+					<FormItem>
+						{getFieldDecorator('password', {
+							rules: [
+								{
+									validator: (rule, value, cb) =>
+										validateField(
+											UserTypes.SignInForm.password,
+											value,
+											cb
+										),
+								},
+							],
+						})(
+							<Input
+								prefix={
+									<Icon
+										type="lock"
+										style={{ color: 'rgba(0,0,0,.25)' }}
+									/>
+								}
+								type="password"
+								placeholder="Password"
+								className="basic-input"
+							/>
+						)}
+					</FormItem>
+					<FormItem>
+						<span className="text-click" onClick={this.handleForgot}>
 						Forgot password
-					</span>
-				</FormItem>
-				<FormItem>
-					<Button
-						type="primary"
-						className="login-form-button"
-						htmlType="submit"
-					>
+						</span>
+					</FormItem>
+					<FormItem>
+						<Button
+							type="primary"
+							className="login-form-button"
+							htmlType="submit"
+						>
 						Log in
-					</Button>
-				</FormItem>
-			</Form>
+						</Button>
+					</FormItem>
+				</Form>
+			</div>
 		);
 	}
 }
